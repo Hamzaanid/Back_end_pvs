@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\UsersControllers;
 use App\Http\Controllers\controller;
+use App\Http\services\fichierdo;
 use App\Http\services\usrhasplaintdo;
 use App\Models\UserHasPlaints;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserHasPlaintsController extends Controller
 {
@@ -38,5 +41,17 @@ class UserHasPlaintsController extends Controller
 
     public function get_mes_plaintes(Request $request){
         return usrhasplaintdo::mesplaintes($request);
+    }
+
+    public function signer_plainte(Request $request,$id_plainte){
+        $descision = $request->userhasplaint['descision'];
+        $lien = $request->userhasplaint['lien'];
+        if($descision != ''){
+            usrhasplaintdo::update($request,$id_plainte);
+            return fichierdo::signerPDF($request,$descision,$lien);
+        }else{
+            return response()->json(["error"=>"vide"],501);
+        }
+
     }
 }

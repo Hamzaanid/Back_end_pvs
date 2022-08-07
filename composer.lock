@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0332535627b5341f6a2385abf1570d3",
+    "content-hash": "798793fba8f0f87cc23a65a01e3c9c51",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -198,6 +198,62 @@
                 }
             ],
             "time": "2021-08-15T20:50:18+00:00"
+        },
+        {
+            "name": "carlos-meneses/laravel-mpdf",
+            "version": "2.1.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mccarlosen/laravel-mpdf.git",
+                "reference": "8cc36dc1c8275f7a08b0f59dc1395d273c922e7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mccarlosen/laravel-mpdf/zipball/8cc36dc1c8275f7a08b0f59dc1395d273c922e7d",
+                "reference": "8cc36dc1c8275f7a08b0f59dc1395d273c922e7d",
+                "shasum": ""
+            },
+            "require": {
+                "mpdf/mpdf": "^8.1.0",
+                "php": "^7.4|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Meneses\\LaravelMpdf\\LaravelMpdfServiceProvider"
+                    ],
+                    "aliases": {
+                        "PDF": "Meneses\\LaravelMpdf\\Facades\\LaravelMpdf"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Meneses\\LaravelMpdf\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel Mpdf: Using Mpdf in Laravel to generate Pdfs.",
+            "keywords": [
+                "laravel",
+                "mpdf",
+                "pdf"
+            ],
+            "support": {
+                "issues": "https://github.com/mccarlosen/laravel-mpdf/issues",
+                "source": "https://github.com/mccarlosen/laravel-mpdf/tree/2.1.8"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/mccarlosen",
+                    "type": "custom"
+                }
+            ],
+            "time": "2022-07-18T15:00:56+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1943,55 +1999,6 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
-        },
-        {
-            "name": "lynx39/lara-pdf-merger",
-            "version": "v1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/deltaaskii/lara-pdf-merger.git",
-                "reference": "fcff464d5fc0a0c3a42c552654959680c911e4fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/deltaaskii/lara-pdf-merger/zipball/fcff464d5fc0a0c3a42c552654959680c911e4fc",
-                "reference": "fcff464d5fc0a0c3a42c552654959680c911e4fc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "LynX39\\LaraPdfMerger": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Musso",
-                    "email": "lynx@deltaaskii.com",
-                    "homepage": "https://github.com/LynX39"
-                }
-            ],
-            "homepage": "https://github.com/LynX39/lara-pdf-merger",
-            "keywords": [
-                "laravel",
-                "manage",
-                "merge",
-                "merger",
-                "paginate",
-                "pdf"
-            ],
-            "support": {
-                "issues": "https://github.com/deltaaskii/lara-pdf-merger/issues",
-                "source": "https://github.com/deltaaskii/lara-pdf-merger/tree/master"
-            },
-            "time": "2017-11-17T14:13:58+00:00"
         },
         {
             "name": "masterminds/html5",

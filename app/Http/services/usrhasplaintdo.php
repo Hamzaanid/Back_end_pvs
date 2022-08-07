@@ -31,6 +31,23 @@ class usrhasplaintdo{
             'traitID' => $request->userhasplaint['traitID'],
             'descision'=>$request->userhasplaint['descision']
         ]);
+
+     /*   DB::beginTransaction();
+
+                try {
+                    DB::update("update user_has_plaints set traitID = ".$request->userhasplaint['traitID'].",
+                               descision = ".$request->userhasplaint['descision']." where plaintID = $id");
+                   fichierdo::signerPDF($request);
+
+                    DB::commit();
+                    // all good
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    return $e;
+                    // something went wrong
+                }*/
+
+
     }
 
      public static function delete($id){
@@ -39,11 +56,11 @@ class usrhasplaintdo{
     }
 
     public static function mesplaintes($request){
-     
+
         return $plaints = DB::table('plaints')
             ->join('user_has_plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
             ->join('plaint_has_fichiers', 'plaints.id','=', 'plaint_has_fichiers.plaintID')
-            ->select( 'user_has_plaints.id as userhasplaintsID', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
+            ->select( 'plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
                        'user_has_plaints.dateMission','user_has_plaints.descision','user_has_plaints.traitID',
                        'plaint_has_fichiers.lien')
                        ->where('user_has_plaints.userID',$request->user->id)

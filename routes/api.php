@@ -17,6 +17,8 @@ use App\Http\Controllers\UsersControllers\UserHasPlaintsController;
 use App\Http\Controllers\UsersControllers\UserHasPvsController;
 
 use App\Http\Controllers\AuthControllers\AuthentController;
+use App\Http\Controllers\PDFController;
+
 
 
 /*
@@ -115,6 +117,8 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/update/{id}',[UserHasPlaintsController::class,'update']);
         Route::delete('/delete/{id}',[UserHasPlaintsController::class,'destroy']);
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
+
+        Route::post('/signer_plainte/{id_plainte}',[UserHasPlaintsController::class,'signer_plainte']);
     });
 
     ## ici le deroulement des fichier
@@ -125,6 +129,8 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/update/{id}',[UserHasPvsController::class,'update']);
         Route::delete('/delete/{id}',[UserHasPvsController::class,'destroy']);
         Route::get('/mespvs',[UserHasPvsController::class,'get_mes_pvs']);
+
+        Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
     });
 
 });

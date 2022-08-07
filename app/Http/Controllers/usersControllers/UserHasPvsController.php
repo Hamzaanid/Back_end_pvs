@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\UsersControllers;
 use App\Http\Controllers\controller;
+use App\Http\services\fichierdo;
 use App\Http\services\usrhaspvsdo;
 
 use App\Models\userHasPvs;
@@ -38,4 +39,17 @@ class UserHasPvsController extends Controller
     public function get_mes_pvs(Request $request){
         return usrhaspvsdo::mespvs($request);
     }
+
+    public function signer_pvs(Request $request,$id_pvs){
+
+        $descision = $request->userhaspvs['descision'];
+        $lien = $request->userhaspvs['lien'];
+        if($descision != ''){
+            usrhaspvsdo::update($request,$id_pvs);
+        return fichierdo::signerPDF($request,$descision,$lien);
+        }else{
+            return response()->json(["error"=>"vide"],501);
+        }
+
+}
 }

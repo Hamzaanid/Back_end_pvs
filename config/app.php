@@ -177,9 +177,14 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // pdf
-        Barryvdh\DomPDF\ServiceProvider::class,
+        //Barryvdh\DomPDF\ServiceProvider::class,
+
         // merge pdf
        // LynX39\LaraPdfMerger\PdfMergerServiceProvider::class,
+
+       // pdf arabic
+       niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
+
     ],
 
     /*
@@ -240,9 +245,10 @@ return [
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
         //PDF
-        'PDF' => Barryvdh\DomPDF\Facade::class,
+        //'PDF' => Barryvdh\DomPDF\Facade::class,
         //'PdfMerger' => LynX39\LaraPdfMerger\Facades\PdfMerger::class,
 
+        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
     ],
 
 ];

@@ -20,4 +20,6 @@ Route::get('/' ,function () {
     return view('welcome');
 });
 
-Route::get('/file', [PDFController::class, 'index']);
+
+Route::get('/dossiers_pvs/{name}',[PDFController::class,'get_URL_pvs']);
+Route::get('/dossiers_plaintes/{name}',[PDFController::class,'get_URL_plaintes']);
