@@ -45,17 +45,29 @@ class PDFController extends Controller
     }
 
 
-
-
   public function couper(){
-    $pdf = new Fpdi();
-    $pageCount =  $pdf->setSourceFile(storage_path('app/public/file1.pdf'));
 
-         for ($i=0; $i < $pageCount-1; $i++) {
-                $pdf->AddPage();
-                $tplId = $pdf->importPage($i+1);
-                $pdf->useTemplate($tplId);
-            }
-            return $pdf->Output();
+    // autre methode
+   /* $this->validate($request, [
+        'filenames' => 'required',
+        'filenames.*' => 'mimes:pdf'
+    ]);
+    if($request->hasFile('filenames')){
+        $pdf = new \LynX39\LaraPdfMerger\PdfManage;
+
+        foreach ($request->file('filenames') as $key => $value) {
+            $pdf->addPDF($value->getPathName(), 'all');
+        }
+
+        $input['file_name'] = time().'.pdf';
+        $pdf->merge('file', public_path($input['file_name']), 'P');
+    }
+
+    return response()->download(public_path($input['file_name']));
+}*/
 }
+        public function update_descision_pdf($request){
+            fichierdo::update_descision_pdf(1,"test manuelle","public/plaintesPDF/ddsdssd.pdf");
+        }
+
 }

@@ -180,7 +180,7 @@ return [
         //Barryvdh\DomPDF\ServiceProvider::class,
 
         // merge pdf
-       // LynX39\LaraPdfMerger\PdfMergerServiceProvider::class,
+        LynX39\LaraPdfMerger\PdfMergerServiceProvider::class,
 
        // pdf arabic
        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
@@ -246,7 +246,7 @@ return [
 
         //PDF
         //'PDF' => Barryvdh\DomPDF\Facade::class,
-        //'PdfMerger' => LynX39\LaraPdfMerger\Facades\PdfMerger::class,
+        'PdfMerger' => LynX39\LaraPdfMerger\Facades\PdfMerger::class,
 
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
     ],

@@ -51,5 +51,18 @@ class UserHasPvsController extends Controller
             return response()->json(["error"=>"vide"],501);
         }
 
-}
+  }
+
+    public function update_descision_pvs(Request $request,$id_pvs){
+        $descision = $request->userhaspvs['descision'];
+        $lien = $request->userhaspvs['lien'];
+        $userID = $request->userhaspvs['userID'];
+
+        if($descision != '' && $userID != ''){
+            usrhaspvsdo::update($request,$id_pvs);
+            return fichierdo::update_descision_pdf($userID,$descision,$lien);
+        }else{
+            return response()->json(["error"=>"vide"],501);
+        }
+   }
 }

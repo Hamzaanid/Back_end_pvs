@@ -77,6 +77,7 @@ Route::namespace('PvsControllers')->prefix('/pvs')
      Route::post('/ByNumpvs',[PvsController::class, 'cherche_byNumpvs']);
     Route::post('/cherche_pv',[PvsController::class, 'getPvs_betwen_dateEnrg']);
     Route::post('/Bydate',[PvsController::class,'getpvsBydateEnrg']);
+
     Route::post('/pvs_of_user',[PvsController::class, 'getPvs_of_user']);
 
 
@@ -119,9 +120,13 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
 
         Route::post('/signer_plainte/{id_plainte}',[UserHasPlaintsController::class,'signer_plainte']);
+        Route::post('/descision/{id_plainte}',[UserHasPlaintsController::class,'update_descision_plainte']);
+
     });
 
-    ## ici le deroulement des fichier
+
+
+
 
     Route::prefix('/haspvs')->group(function(){
         Route::post('/index',[UserHasPvsController::class,'index']);
@@ -131,6 +136,7 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::get('/mespvs',[UserHasPvsController::class,'get_mes_pvs']);
 
         Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
+        Route::post('/descision/{id_pvs}',[UserHasPvsController::class,'update_descision_pvs']);
     });
 
 });

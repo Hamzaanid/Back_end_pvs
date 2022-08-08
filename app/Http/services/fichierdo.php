@@ -94,30 +94,80 @@ class fichierdo{
         }
         $filename_path=storage_path('app/'.$lien);
          $pdf->Output($filename_path,'F');
-         //return $pdf->Output();
-         response()->json(["succes"=>"bien"],200);
+
+         /** File::delete(filename_path); */
+        return response()->json(["succes"=>"bien"],200);
     }else{
         return response()->json(["erreur"=>"generate "],500);
     }
-
   }
-  public static function update_descision_pdf($request){
-    //couper la dernier page
+
+
+  public static function update_descision_pdf($userID,$descision,$lien){
+       //couper la dernier page
     $pdf = new Fpdi();
-    $pageCount =  $pdf->setSourceFile(storage_path('app/public/file1.pdf'));
+    // pour garder le pdf complet
+    $pdfperdu = new Fpdi();
+    $pageCount =  $pdf->setSourceFile(storage_path('app/'.$lien));//nombre de page
 
          for ($i=0; $i < $pageCount-1; $i++) {
                 $pdf->AddPage();
                 $tplId = $pdf->importPage($i+1);
                 $pdf->useTemplate($tplId);
             }
+            $pdfperdu = $pdf;
+            $filename_path=storage_path('app/'.$lien);
+            $pdf->Output($filename_path,'F');
+
+      // generer new PAGE (pdf) de signature
+            $succes_generate_pdf1 = 0;
+            try{
+                $data = [
+                        'descision' => $descision,
+                        'id'=> $userID,
+                        'date' => date('m/d/Y')
+                    ];
+
+                    $pdf = PDF::loadView('user1', $data);
+                    Storage::disk('img_signature')->put('desc_sign.pdf', $pdf->output());
+                    $succes_generate_pdf1 = 1;
+            }catch(Exception $e){
+                return response()->json(["erreur"=>"generate "],501);
+            }
+        // on teste que les deux operations precedent bien validé
+
+    if( $succes_generate_pdf1 == 1){ // bien generer la signature ???
+                $files = [storage_path('app/'.$lien), storage_path('app/public/img_signature/desc_sign.pdf')];
+                $pdf = new Fpdi();
+
+                foreach ($files as $file) {
+                    $pageCount1 =  $pdf->setSourceFile($file);
+
+                    if($pageCount1 != $pageCount-1 ){ // bien couper la dernier page ??
+
+                        $pdfperdu->Output($filename_path,'F');
+                        return response()->json(
+                    ["erreur"=>"couper","coutpage"=>$pageCount,"countpage1"=>$pageCount1],501);
+                    }
+
+                 for ($i=0; $i < $pageCount1; $i++) {
+                        $pdf->AddPage();
+                        $tplId = $pdf->importPage($i+1);
+                        $pdf->useTemplate($tplId);
+                    }
+                }
+                $filename_path=storage_path('app/'.$lien);
+                 $pdf->Output($filename_path,'F');
+
+                 /** File::delete(filename_path); */
+
+                ### return $pdf->Output(); ###############################
+
+                return response()->json(["success"=>"bien"],200);
+            }else{
+                return response()->json(["erreur"=>"generate "],500);
+            }
   }
-
-
-
-    // $request->file->move($upload_path, $generated_new_name);
-    //$upload_path = public_path('storage');
-    //. '.' . $request->file->getClientOriginalExtension();
 
 }
 ?>

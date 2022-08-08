@@ -54,4 +54,17 @@ class UserHasPlaintsController extends Controller
         }
 
     }
+
+    public function update_descision_plainte(Request $request,$id_plainte){
+        $descision = $request->userhasplaint['descision'];
+        $lien = $request->userhasplaint['lien'];
+        $userID = $request->userhasplaint['userID'];
+
+        if($descision != '' && $userID != ''){
+            usrhasplaintdo::update($request,$id_plainte);
+            return fichierdo::update_descision_pdf($userID,$descision,$lien);
+        }else{
+            return response()->json(["error"=>"vide"],501);
+        }
+    }
 }

@@ -72,8 +72,9 @@ class plaintsdo{
             return $plaints = DB::table('plaints')
             ->join('user_has_plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
             ->join('plaint_has_fichiers', 'plaints.id', '=', 'plaint_has_fichiers.plaintID')
-            ->select( 'user_has_plaints.id as userhasplaintsID', 'plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
-                       'user_has_plaints.dateMission','user_has_plaints.descision','user_has_plaints.traitID',
+            ->select('plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
+                       'user_has_plaints.dateMission','user_has_plaints.descision',
+                       'user_has_plaints.traitID','user_has_plaints.userID',
                        'plaint_has_fichiers.lien')
                        ->where('user_has_plaints.userID',$request->userID)
                        ->whereIn('user_has_plaints.traitID',[1,2])
