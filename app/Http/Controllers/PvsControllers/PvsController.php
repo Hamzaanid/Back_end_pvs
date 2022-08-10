@@ -6,6 +6,7 @@ use App\Http\services\fichierdo;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\pvs;
+use App\Models\userHasPvs;
 use Illuminate\Support\Facades\DB;
 
 
@@ -23,19 +24,23 @@ class PvsController extends Controller
 
 
     public function cherche_byNumpvs(Request $request){
-        return $pv = pvs::with('typepvs')
-                    ->where('Numpvs',$request->Numpvs)->get();
+
+                    return $pv = userHasPvs:: with('pvs','pvs.hasfichier:pvsID,lien','pvs.typepvs')
+                            ->select('pvs.id as pvsID','user_has_pvs.traitID')
+                            ->rightJoin('pvs','pvs.id','=','user_has_pvs.pvsID')
+                            ->where('Numpvs',$request->Numpvs)
+                            ->get();
     }
 
     public function getpvsBydateEnrg(Request $request){
-        return  pvs::with('typepvs','typesourcepvs')
-                    ->where('dateEnregPvs',$request->dateEnrg)
+        return  pvs::with('typepvs','typesourcepvs','hasfichier:pvsID,lien')
+                    ->whereBetween('dateEnregPvs',[$request->dateEnrg['de'],$request->dateEnrg['a']])
                     ->whereNotIn('id',function ($query) {
                         $query->select('pvsID')
                             ->from('user_has_pvs');
                         })->get();
 
-                        
+
     }
 
     public function getPvs_of_user(Request $request)

@@ -27,7 +27,7 @@ class Plaints extends Model
     }
 
     public function hasfichier(){
-        return $this->hasOne(plaint_has_fichier::class);
+        return $this->hasOne(plaint_has_fichier::class,'plaintID');
     }
 
 

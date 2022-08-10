@@ -55,17 +55,6 @@ class pvsdo{
         return "Not found.";
     }
     public static function getPvs_of_user($request){
-        //les pvs des vice procurreur  automatique
-               /*  return $pl = pvs::with('userhaspvs:id,dateMission,descision,traitID',
-                                        'hasfichier:id,lien')
-                 ->select('id','Numpvs','dateEnregPvs')
-                 ->whereIn('id',function ($query) {
-                         global $request;
-                      $query->select('pvsID')
-                          ->from('user_has_pvs')
-                          ->where('user_has_pvs.userID',$request->userID)
-                          ->where('user_has_pvs.traitID',1);
-                      })->orderBy('created_at','desc')->get(); */
 
     return $pvs = DB::table('pvs')
          ->join('user_has_pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')

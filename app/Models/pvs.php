@@ -29,7 +29,7 @@ class pvs extends Model
     }
 
     public function hasfichier(){
-        return $this->hasOne(pvs_has_fichier::class);
+        return $this->hasOne(pvs_has_fichier::class,'pvsID');
     }
 
 }

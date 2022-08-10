@@ -58,12 +58,11 @@ class plaintsdo{
     }
 
     public static function getplaintBydateEnrg( $request ){
-        $dateenrg  = $request->dateEnrg;
-        return $pl = Plaints::with('sourcePlaint','typePlaint')
+        return $pl = Plaints::with('sourcePlaint','typePlaint','hasfichier:plaintID,lien')
                      ->whereNotIn('id',function ($query) {
                         $query->select('plaintID')
                             ->from('user_has_plaints');
-                        })->where('dateEnregPlaints',$dateenrg)
+                        })->whereBetween('dateEnregPlaints',[$request->dateEnrg['de'],$request->dateEnrg['a']])
                         ->get();
         }
 
