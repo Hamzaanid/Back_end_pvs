@@ -179,9 +179,6 @@ return [
         // pdf
         //Barryvdh\DomPDF\ServiceProvider::class,
 
-        // merge pdf
-        LynX39\LaraPdfMerger\PdfMergerServiceProvider::class,
-
        // pdf arabic
        niklasravnsborg\LaravelPdf\PdfServiceProvider::class,
 
@@ -244,10 +241,7 @@ return [
         'JWTAuth'=>Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
 
-        //PDF
-        //'PDF' => Barryvdh\DomPDF\Facade::class,
-        'PdfMerger' => LynX39\LaraPdfMerger\Facades\PdfMerger::class,
-
+        // pdf write arabic
         'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
     ],
 
