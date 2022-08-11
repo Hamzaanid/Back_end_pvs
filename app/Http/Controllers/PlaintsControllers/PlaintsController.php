@@ -61,7 +61,7 @@ class PlaintsController extends Controller
     public function destroy($id)
     {
         //DB::table('plaints')->where('id',$id)->delete();
-        plaintsdo::delete($id);
+        return plaintsdo::delete($id);
 
     }
 

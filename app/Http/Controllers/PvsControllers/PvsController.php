@@ -59,7 +59,7 @@ class PvsController extends Controller
     public function update(Request $request, $id) { pvsdo::update($request,$id);  }
 
 
-    public function destroy($id){  pvsdo::delete($id); }
+    public function destroy($id){ return pvsdo::delete($id); }
 
 
     public function statistique(Request $request){ return  pvsdo::stat($request); }

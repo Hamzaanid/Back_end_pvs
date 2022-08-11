@@ -1,8 +1,13 @@
 <?php
 namespace App\Http\services;
-use App\Models\Plaints;
-use Illuminate\Support\Facades\DB;
 
+use App\Models\plaint_has_fichier;
+use App\Models\Plaints;
+use App\Models\userHasPlaints;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 class plaintsdo{
 
     public static function create($request)
@@ -49,12 +54,28 @@ class plaintsdo{
     }
 
     public static function delete($id){
-        $plaint = Plaints::find($id);
-        if($plaint)
-        {
-            $plaint->delete();
-            return $plaint->id." deleted.";
+        $userhasplaint = userHasPlaints::where('plaintID',$id)->first();
+        if($userhasplaint){
+            return response()->json(["error"=>"foreing key"],500);
+        }else{
+            $plaint = Plaints::find($id);
+            $plainthasfiche =  plaint_has_fichier::where('plaintID',$id)->first();
+
+            $lien='';
+
+            DB::transaction(function () use ($plaint,$plainthasfiche,$lien){
+                if($plaint){
+                    $lien = $plainthasfiche->lien;
+                    $plainthasfiche->delete();
+                    $plaint->delete();
+
+                    Storage::delete($lien);
+                }
+            });
+
+            return response()->json(["succes"=>"bien"],200);
         }
+
     }
 
     public static function getplaintBydateEnrg( $request ){

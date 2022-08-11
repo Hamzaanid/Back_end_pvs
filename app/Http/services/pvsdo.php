@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\pvsHasDataPartie;
 
 use App\Http\services\upload_fichier;
+use App\Models\pvs_has_fichier;
+use App\Models\userHasPvs;
+use Illuminate\Support\Facades\Storage;
 
 class pvsdo{
 
@@ -47,12 +50,29 @@ class pvsdo{
    }
 
     public static function delete($id){
-        $pv = pvs::find($id);
-        if($pv){
-            $pv->delete();
-            return $pv->id." has been deleted.";
+        $userhaspv = userHasPvs::where('pvsID',$id)->first();
+        if($userhaspv){
+            // pas possible de supprimer pvs d'une vice proc
+            return response()->json(["error"=>"foreing key"],500);
+        }else{
+            $pv = pvs::find($id);
+            $pvhasfiche =  pvs_has_fichier::where('pvsID',$id)->first();
+            $lien='';
+
+            DB::transaction(function () use ($pv,$pvhasfiche,$lien){
+                if($pv){
+                    $lien = $pvhasfiche->lien;
+                    $pvhasfiche->delete();
+                    $pv->delete();
+
+                    Storage::delete($lien);
+
+                }
+            });
+
+            return response()->json(["succes"=>"bien"],200);
         }
-        return "Not found.";
+
     }
     public static function getPvs_of_user($request){
 
