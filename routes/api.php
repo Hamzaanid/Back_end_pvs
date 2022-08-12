@@ -13,6 +13,7 @@ use App\Http\Controllers\PvsControllers\TypeSourcePvs;
 
 //use App\Http\Controllers\DataPartieController;
 use App\Http\Controllers\usersControllers\UserController;
+use App\Http\Controllers\usersControllers\RoleController;
 use App\Http\Controllers\UsersControllers\UserHasPlaintsController;
 use App\Http\Controllers\UsersControllers\UserHasPvsController;
 
@@ -111,11 +112,15 @@ Route::namespace('UsersControllers')->prefix('/users')
     Route::post('/logout',[AuthentController::class,'logout']);
     Route::post('/profile',[AuthentController::class,'profile']);
 
+    Route::prefix('/role')->group(function(){
+        Route::get('/index',[RoleController::class,'index']);
+        Route::post('/store',[RoleController::class,'store']);
+    });
 
     Route::prefix('/hasplaints')->group(function(){
         Route::post('/index',[UserHasPlaintsController::class,'index']);
         Route::post('/store',[UserHasPlaintsController::class,'store']);
-        Route::put('/update/{id}',[UserHasPlaintsController::class,'update']);
+        Route::put('/updateTrait/{id}',[UserHasPlaintsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPlaintsController::class,'destroy']);
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
 
@@ -131,7 +136,7 @@ Route::namespace('UsersControllers')->prefix('/users')
     Route::prefix('/haspvs')->group(function(){
         Route::post('/index',[UserHasPvsController::class,'index']);
         Route::post('/store',[UserHasPvsController::class,'store']);
-        Route::put('/update/{id}',[UserHasPvsController::class,'update']);
+        Route::put('/updateTrait/{id}',[UserHasPvsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPvsController::class,'destroy']);
         Route::get('/mespvs',[UserHasPvsController::class,'get_mes_pvs']);
 

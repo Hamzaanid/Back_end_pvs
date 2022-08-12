@@ -26,9 +26,12 @@ class UserHasPvsController extends Controller
         return usrhaspvsdo::create($request);
     }
 
-    public function update(Request $request,$id)
+    public function updateTrait(Request $request,$id)
     {
-        usrhaspvsdo::update($request,$id);
+        $userhaspvs = userHasPvs::where('pvsID',$id)->first();
+        $userhaspvs->update([
+            'traitID' => $request->traitID
+        ]);
     }
 
     public function destroy($id)

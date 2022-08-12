@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\UsersControllers;
+
 use App\Http\Controllers\controller;
 use App\Http\services\fichierdo;
 use App\Http\services\usrhasplaintdo;
@@ -15,10 +16,10 @@ class UserHasPlaintsController extends Controller
     {
         $de = $request->userhasplaint['de'];
         $a = $request->userhasplaint['a'];
-        return UserHasPlaints::with(['plaint.sourcePlaint','user:id,nom'])
-                ->select('id','userID','plaintID','traitID','dateMission')
-                ->whereBetween('dateMission',[$de,$a])
-                ->get();
+        return UserHasPlaints::with(['plaint.sourcePlaint', 'user:id,nom'])
+            ->select('id', 'userID', 'plaintID', 'traitID', 'dateMission')
+            ->whereBetween('dateMission', [$de, $a])
+            ->get();
     }
 
 
@@ -28,43 +29,50 @@ class UserHasPlaintsController extends Controller
     }
 
 
-    public function update(Request $request,$id)
+    public function updateTrait(Request $request, $id)
     {
-        usrhasplaintdo::update($request,$id);
+        $usershasplaint = userHasPlaints::where('plaintID',$id)->first();
+        $usershasplaint->update([
+            'traitID' => $request->traitID
+        ]);
     }
 
 
-    public function destroy($id)
-    {
-        usrhasplaintdo::delete($id);
-    }
 
-    public function get_mes_plaintes(Request $request){
+
+    public function get_mes_plaintes(Request $request)
+    {
         return usrhasplaintdo::mesplaintes($request);
     }
 
-    public function signer_plainte(Request $request,$id_plainte){
+    public function signer_plainte(Request $request, $id_plainte)
+    {
         $descision = $request->userhasplaint['descision'];
         $lien = $request->userhasplaint['lien'];
-        if($descision != ''){
-            usrhasplaintdo::update($request,$id_plainte);
-            return fichierdo::signerPDF($request,$descision,$lien);
-        }else{
-            return response()->json(["error"=>"vide"],501);
+        if ($descision != '') {
+            usrhasplaintdo::update($request, $id_plainte);
+            return fichierdo::signerPDF($request, $descision, $lien);
+        } else {
+            return response()->json(["error" => "vide"], 501);
         }
-
     }
 
-    public function update_descision_plainte(Request $request,$id_plainte){
+    public function update_descision_plainte(Request $request, $id_plainte)
+    {
         $descision = $request->userhasplaint['descision'];
         $lien = $request->userhasplaint['lien'];
         $userID = $request->userhasplaint['userID'];
 
-        if($descision != '' && $userID != ''){
-            usrhasplaintdo::update($request,$id_plainte);
-            return fichierdo::update_descision_pdf($userID,$descision,$lien);
-        }else{
-            return response()->json(["error"=>"vide"],501);
+        if ($descision != '' && $userID != '') {
+            usrhasplaintdo::update($request, $id_plainte);
+            return fichierdo::update_descision_pdf($userID, $descision, $lien);
+        } else {
+            return response()->json(["error" => "vide"], 501);
         }
+    }
+
+    public function destroy($id)
+    {
+        usrhasplaintdo::delete($id);
     }
 }
