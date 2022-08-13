@@ -17,6 +17,11 @@ class fichierdo{
         return response()->download(storage_path('app/'.$request->lien));
     }
 
+    public static function image_signature($request,$iduser){
+        $file =$request->file('img');
+        $path = Storage::putFileAs("public/img_signature",$file,'user'.$iduser.'.jpeg');
+    }
+
     public static function store_pdf_pvs($request,$idpvs,$Numpvs)
     {
         /*$rules = ['file' => 'required', 'file.*' => 'mimes:pdf'];

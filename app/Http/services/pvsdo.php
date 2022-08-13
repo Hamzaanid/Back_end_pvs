@@ -50,15 +50,24 @@ class pvsdo{
    }
 
     public static function delete($id){
-        $userhaspv = userHasPvs::where('pvsID',$id)->first();
-        if($userhaspv){
-            // pas possible de supprimer pvs d'une vice proc
-            return response()->json(["error"=>"foreing key"],500);
-        }else{
             $pv = pvs::find($id);
             $pvhasfiche =  pvs_has_fichier::where('pvsID',$id)->first();
+            $userhaspv = userHasPvs::where('pvsID',$id)->first();
             $lien='';
+        if($userhaspv){
+            DB::transaction(function () use ($pv,$pvhasfiche,$lien,$userhaspv){
+                if($pv){
+                    $lien = $pvhasfiche->lien;
+                    $userhaspv->delete();
+                    $pvhasfiche->delete();
+                    $pv->delete();
 
+                    Storage::delete($lien);
+
+                }
+            });
+            return response()->json(["succes"=>"bien"],200);
+        }else{
             DB::transaction(function () use ($pv,$pvhasfiche,$lien){
                 if($pv){
                     $lien = $pvhasfiche->lien;
@@ -69,8 +78,6 @@ class pvsdo{
 
                 }
             });
-
-            return response()->json(["succes"=>"bien"],200);
         }
 
     }

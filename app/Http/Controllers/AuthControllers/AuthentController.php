@@ -23,7 +23,8 @@ class AuthentController extends Controller
         }
         return response()->json([
             'access_token' => $token,
-            'user' => $user
+            'name' => $user->nom,
+            'role' =>$user->role,
            //
         ],$token_status);
 

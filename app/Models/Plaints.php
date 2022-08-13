@@ -23,7 +23,7 @@ class Plaints extends Model
     }
 
     public function userhasplaints(){
-        return $this->hasOne(userhasplaints::class);
+        return $this->hasMany(userhasplaints::class,'plaintID');
     }
 
     public function hasfichier(){

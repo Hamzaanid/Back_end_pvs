@@ -31,20 +31,7 @@ class usrhasplaintdo{
             'traitID' => $request->userhasplaint['traitID'],
             'descision'=>$request->userhasplaint['descision']
         ]);
-     /*   DB::beginTransaction();
-
-                try {
-                    DB::update("update user_has_plaints set traitID = ".$request->userhasplaint['traitID'].",
-                               descision = ".$request->userhasplaint['descision']." where plaintID = $id");
-                   fichierdo::signerPDF($request);
-
-                    DB::commit();
-                    // all good
-                } catch (\Exception $e) {
-                    DB::rollback();
-                    return $e;
-                    // something went wrong
-                }*/
+     
 
 
     }

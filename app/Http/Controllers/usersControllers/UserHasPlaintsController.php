@@ -37,7 +37,16 @@ class UserHasPlaintsController extends Controller
         ]);
     }
 
-
+    public function getArchivePlaint(Request $request){
+        return UserHasPlaints::with('user:id,nom',
+                    'plaint:id,dateEnregPlaints,sujetPlaints,referencePlaints',
+                    'plaint.hasfichier:plaintID,lien as lien')
+                    ->join('plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
+                    ->select('user_has_plaints.userID','plaints.id as plaintID', 'user_has_plaints.traitID')
+                    ->where('traitID',3)
+                    ->where('plaints.referencePlaints',$request->referenece)
+                    ->get();
+    }
 
 
     public function get_mes_plaintes(Request $request)

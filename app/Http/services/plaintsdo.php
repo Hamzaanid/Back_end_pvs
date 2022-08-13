@@ -55,13 +55,25 @@ class plaintsdo{
 
     public static function delete($id){
         $userhasplaint = userHasPlaints::where('plaintID',$id)->first();
-        if($userhasplaint){
-            return response()->json(["error"=>"foreing key"],500);
-        }else{
-            $plaint = Plaints::find($id);
-            $plainthasfiche =  plaint_has_fichier::where('plaintID',$id)->first();
+        $plaint = Plaints::find($id);
+        $plainthasfiche =  plaint_has_fichier::where('plaintID',$id)->first();
 
             $lien='';
+        if($userhasplaint){
+            DB::transaction(function () use ($plaint,$plainthasfiche,$lien,$userhasplaint){
+                if($plaint){
+                    $userhasplaint->delete();
+                    $lien = $plainthasfiche->lien;
+                    $plainthasfiche->delete();
+                    $plaint->delete();
+
+                    Storage::delete($lien);
+                }
+            });
+
+            return response()->json(["succes"=>"bien"],200);
+        }else{
+
 
             DB::transaction(function () use ($plaint,$plainthasfiche,$lien){
                 if($plaint){

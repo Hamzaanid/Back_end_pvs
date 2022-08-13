@@ -34,6 +34,17 @@ class UserHasPvsController extends Controller
         ]);
     }
 
+    public function getArchivePvs(Request $request){
+        return userHasPvs::with('user:id,nom',
+                    'pvs:id,dateEnregPvs,sujetpvs,Numpvs',
+                    'pvs.hasfichier:pvsID,lien as lien')
+                    ->join('pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
+                    ->select('user_has_pvs.userID','pvs.id as pvsID', 'user_has_pvs.traitID')
+                    ->where('traitID',3)
+                    ->where('pvs.Numpvs',$request->Numpvs)
+                    ->get();
+    }
+
     public function destroy($id)
     {
         usrhaspvsdo::delete($id);

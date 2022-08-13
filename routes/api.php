@@ -108,6 +108,7 @@ Route::namespace('UsersControllers')->prefix('/users')
     Route::put('/update/{id}', [UserController::class, 'update']);
     Route::delete('/delete/{id}', [UserController::class, 'destroy']);
     Route::get('/viceProc',[UserController::class,'index_viceProc']);
+    Route::post('/img_sign',[UserController::class,'img_sign']);
 
     Route::post('/logout',[AuthentController::class,'logout']);
     Route::post('/profile',[AuthentController::class,'profile']);
@@ -123,6 +124,7 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/updateTrait/{id}',[UserHasPlaintsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPlaintsController::class,'destroy']);
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
+        Route::post('/getArchiveplaint',[UserHasPlaintsController::class,'getArchivePlaint']);
 
         Route::post('/signer_plainte/{id_plainte}',[UserHasPlaintsController::class,'signer_plainte']);
         Route::post('/descision/{id_plainte}',[UserHasPlaintsController::class,'update_descision_plainte']);
@@ -139,6 +141,7 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/updateTrait/{id}',[UserHasPvsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPvsController::class,'destroy']);
         Route::get('/mespvs',[UserHasPvsController::class,'get_mes_pvs']);
+        Route::post('/getArchivepvs',[UserHasPvsController::class,'getArchivePvs']);
 
         Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
         Route::post('/descision/{id_pvs}',[UserHasPvsController::class,'update_descision_pvs']);

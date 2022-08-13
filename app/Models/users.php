@@ -42,10 +42,10 @@ class users extends Authenticatable implements JWTSubject
     }
 
     public function userhasplaints(){
-        return $this->hasMany(userHasPlaints::class);
+        return $this->hasMany(userHasPlaints::class,'palintID');
     }
     public function userhaspvs(){
-        return $this->hasMany(userHasPvs::class);
+        return $this->hasMany(userHasPvs::class,'pvsID');
     }
 
 
