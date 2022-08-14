@@ -159,7 +159,7 @@ class fichierdo{
                  Storage::delete('public/img_signature/desc_sign.pdf');
                  /** File::delete(filename_path); */
 
-                ### return $pdf->Output(); ###############################
+                ######## return $pdf->Output(); ##################
 
                 return response()->json(["success"=>"bien"],200);
             }else{
