@@ -13,8 +13,8 @@
 
         .image{
             margin: 30px;
-      width:300px;
-      height:300px;
+      width:250px;
+      height:250px;
       overflow:hidden;
       display:block;
       background-color:white; /*not necessary, just to show the image box, can be added to img*/
@@ -31,8 +31,7 @@
 
     <div class="image">
         <p>توقيع</p>
-        <img src="{{ storage_path('app/public/img_signature/user'. $id .'.jpeg') }}"
-            >
+        <img src="{{ storage_path('app/public/img_signature/user'. $id .'.jpeg') }}">
     </div>
 
 

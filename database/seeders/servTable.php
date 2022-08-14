@@ -25,15 +25,23 @@ class servTable extends Seeder
 
     //plaint
 
-    public $sourceplaint = ['src1','src2','src3'] ;
-    public $typeplaint = ['typep1','typep2','typep3'] ;
+    //public $sourceplaint = ['src1','src2','src3'] ;
+    public $sourceplaint=["مشتكي", "محامي" ,"وشاية", "اختصاص", "وزارة العدل"," مؤسسة سجنية" , "الوكيل" ,"العام لدى محكمة النقض", "انابة"];
+   // public $typeplaint = ['typep1','typep2','typep3'] ;
+    public $typeplaint = ["[3101] شكاية عادية","[3102] شكاية إهمال الاسرة","[3103] شكاية العنف ضد الأطفال",
+   "[3104]	شكاية العنف ضد النساء",
+    "[3106]	شكاية شيك بدون مؤونة",
+    "[3107]	شكاية المعتقلين"
+];
 
     //pvs
-    public $typepvs = ["typepvs1","typepvs2","typepvs3"];
-    public $type_police_judics = ["typrpolice1","typrpolice2","typrpolice3"];
-    public $type_source_pvs = ["typesrcpvs1","typrpolice2","typrpolice3"];
+   // public $typepvs = ["typepvs1","typepvs2","typepvs3"];
+   // public $type_police_judics = ["typrpolice1","typrpolice2","typrpolice3"];
+    //public $type_source_pvs = ["typesrcpvs1","typrpolice2","typrpolice3"];
     public $traiteds = ["pas","en cours","traite","autre traite"];
-
+    public $typepvs=[ "محضر عادي [3201]","محضر تلبسي [3202]","محضر العنف ضد النساء [3216]","محضر عادي الجرائم المالية[3222]"," محضر تلبسي الجرائم المالية [3223]"] ;
+    public $type_police_judics=["الامن الوطني" , "الدرك الملكي" , "كتاب الضبط الموظفون", "المكلفون بمهمة", "باقي", "محرري المحاضر" ,"السلطة المحلية","الضباط السامون", "وكلاء الملك" ,"هيئة المحامون"];
+    public $type_source_pvs=[ "محلي","انابة","اختصاص"];
 
     public function dbInsert($table,$values){
         foreach($values as $elt){
