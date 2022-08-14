@@ -81,6 +81,7 @@ class fichierdo{
             Storage::disk('img_signature')->put('desc_sign.pdf', $pdf->output());
             $succes_generate_pdf1 = 1;
     }catch(\Exception $e){
+        Storage::delete('public/img_signature/desc_sign.pdf');
         return response()->json(["erreur"=>"generate "],500);
     }
 
@@ -100,9 +101,10 @@ class fichierdo{
         $filename_path=storage_path('app/'.$lien);
          $pdf->Output($filename_path,'F');
 
-         /** File::delete(filename_path); */
+         Storage::delete('public/img_signature/desc_sign.pdf');
         return response()->json(["succes"=>"bien"],200);
     }else{
+        Storage::delete('public/img_signature/desc_sign.pdf');
         return response()->json(["erreur"=>"generate "],500);
     }
   }
@@ -111,8 +113,6 @@ class fichierdo{
   public static function update_descision_pdf($userID,$descision,$lien){
        //couper la dernier page
     $pdf = new Fpdi();
-    // pour garder le pdf complet
-    $pdfperdu = new Fpdi();
     $pageCount =  $pdf->setSourceFile(storage_path('app/'.$lien));//nombre de page
 
          for ($i=0; $i < $pageCount-1; $i++) {
@@ -120,7 +120,6 @@ class fichierdo{
                 $tplId = $pdf->importPage($i+1);
                 $pdf->useTemplate($tplId);
             }
-            $pdfperdu = $pdf;
             $filename_path=storage_path('app/'.$lien);
             $pdf->Output($filename_path,'F');
 
@@ -137,23 +136,17 @@ class fichierdo{
                     Storage::disk('img_signature')->put('desc_sign.pdf', $pdf->output());
                     $succes_generate_pdf1 = 1;
             }catch(Exception $e){
+                Storage::delete('public/img_signature/desc_sign.pdf');
                 return response()->json(["erreur"=>"generate "],501);
             }
         // on teste que les deux operations precedent bien validé
 
-    if( $succes_generate_pdf1 == 1){ // bien generer la signature ???
+           if( $succes_generate_pdf1 == 1){ // bien generer la signature ???
                 $files = [storage_path('app/'.$lien), storage_path('app/public/img_signature/desc_sign.pdf')];
                 $pdf = new Fpdi();
 
                 foreach ($files as $file) {
                     $pageCount1 =  $pdf->setSourceFile($file);
-
-                    if($pageCount1 != $pageCount-1 ){ // bien couper la dernier page ??
-
-                        $pdfperdu->Output($filename_path,'F');
-                        return response()->json(
-                    ["erreur"=>"couper","coutpage"=>$pageCount,"countpage1"=>$pageCount1],501);
-                    }
 
                  for ($i=0; $i < $pageCount1; $i++) {
                         $pdf->AddPage();
@@ -163,14 +156,16 @@ class fichierdo{
                 }
                 $filename_path=storage_path('app/'.$lien);
                  $pdf->Output($filename_path,'F');
-
+                 Storage::delete('public/img_signature/desc_sign.pdf');
                  /** File::delete(filename_path); */
 
                 ### return $pdf->Output(); ###############################
 
                 return response()->json(["success"=>"bien"],200);
             }else{
+                Storage::delete('public/img_signature/desc_sign.pdf');
                 return response()->json(["erreur"=>"generate "],500);
+
             }
   }
 

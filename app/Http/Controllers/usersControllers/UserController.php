@@ -21,9 +21,14 @@ class UserController extends Controller
     }
 
     public function index_viceProc(){
-        $id_proc = Role::select('id')->where('nom','vice_admin')->first();
+        $id_proc = Role::select('id')->whereIn('nom',['vice_proc','proc'])->get();
+       $id=[];
+       foreach($id_proc as $role){
+        array_push($id,$role->id);
+       }
+        $id;
         return users::select('id','nom')
-                      ->where('idRole',$id_proc->id)->get();
+                      ->whereIn('idRole',$id)->get();
     }
 
     public function store(Request $request)

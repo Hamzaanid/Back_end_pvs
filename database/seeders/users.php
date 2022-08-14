@@ -30,6 +30,14 @@ class users extends Seeder
                 'nom' => 'user'
             ]);
 
+            DB::table('users')->insert([
+                'numUser'=> "0655667788",
+                 'active' => true,
+                'nom'      =>  "admin",
+                'email'    => "admin@gmail.com",
+                'password' => "admin",
+                'idRole'   => 1
+                ]);
 
         DB::table('users')->insert([
             'numUser'=> "0655667788",

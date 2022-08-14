@@ -4,6 +4,7 @@ namespace App\Http\services;
 //use App\Models\usersHasPlaints;
 use App\Models\users;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class usersdo{
 
@@ -22,7 +23,11 @@ class usersdo{
             DB::transaction(function () use ($newUser){
                 global $request;
                  $id = $newUser->save();
-                fichierdo::image_signature($request,$newUser->id);
+
+                 if($request->file('img')){
+                    fichierdo::image_signature($request,$newUser->id);
+                 }
+
             });
 
     }
@@ -42,6 +47,7 @@ class usersdo{
         if($id != $request->user['id']){
             $users = users::find($id);
         if($users){
+            Storage::delete("public/img_signature/user".$id.".jpeg");
             $users->delete();
             return $id;
         }

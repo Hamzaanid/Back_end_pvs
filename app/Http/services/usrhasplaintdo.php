@@ -31,7 +31,7 @@ class usrhasplaintdo{
             'traitID' => $request->userhasplaint['traitID'],
             'descision'=>$request->userhasplaint['descision']
         ]);
-     
+
 
 
     }
