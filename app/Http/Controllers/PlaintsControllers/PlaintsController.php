@@ -26,7 +26,7 @@ class PlaintsController extends Controller
     public function getplaintByref(Request $request)
     {
         return $pl = userHasPlaints::with('plaint','plaint.hasfichier:plaintID,lien as lien')
-            ->select('plaints.id as plaintID', 'user_has_plaints.traitID as traitID')
+            ->select('plaints.id as plaintID', 'user_has_plaints.traitID','user_has_plaints.descision')
             ->rightJoin('plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
             ->where('referencePlaints', $request->reference)
             ->get();

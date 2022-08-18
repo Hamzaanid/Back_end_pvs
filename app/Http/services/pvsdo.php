@@ -13,24 +13,30 @@ use Illuminate\Support\Facades\Storage;
 class pvsdo{
 
     public static function create($request){
-        //$request->pv = json_decode($request->pv, true);
-        $insert =[
-            'TypeSourcePvsID'=> $request->pv['TypeSourcePvsID'],
-            'typepvsID'=> $request->pv['typepvsID'],
-            'typePoliceJudicID'=>$request->pv['typePoliceJudicID'],
-            'sujetpvs'=> $request->pv['sujetpvs'],
-            'dateEnregPvs'=> $request->pv['dateEnregPvs'],
-            'policeJudics'=> $request->pv['policeJudics'],
-            'Numpvs' => $request->pv['Numpvs'],
-            'datePvs' =>  $request->pv['datePvs'],
-            'contreInnconue'=> $request->pv['contreInnconue']
-        ];
+        $request->pv = json_decode($request->pv, true);
+        $newpv = new pvs();
+        $newpv->TypeSourcePvsID = $request->pv['TypeSourcePvsID'];
+        $newpv->typepvsID = $request->pv['typepvsID'];
+        $newpv->typePoliceJudicID = $request->pv['typePoliceJudicID'];
+        $newpv->sujetpvs = $request->pv['sujetpvs'];
+        $newpv->dateEnregPvs = $request->pv['dateEnregPvs'];
+        $newpv->Numpvs = $request->pv['Numpvs'];
+        $newpv->policeJudics = $request->pv['policeJudics'];
 
-                $pv = pvs::create($insert);
+        //$newpv->datePvs = $request->pv['datePvs'];
+        //$newpv->contreInnconue = $request->pv['contreInnconue'];
+        $succes = 1;
+            DB::transaction(function () use ($newpv,$succes){
+                global $request,$succes;
+                $newpv->save();
 
-                $data[0]= $pv->id;
-                $data[1]= $request ->pv['Numpvs'];
-            return $data;
+                 $succes = fichierdo::store_pdf_pvs($request,$newpv->id,$newpv->Numpvs);
+            });
+            if($succes == -1){
+                return response()->json(["error"],501);
+            }else{
+                return response()->json(["succes"],200);
+            }
     }
 
     public static function update($request,$id){
@@ -97,15 +103,7 @@ class pvsdo{
 
          }
 
-    public static function get_pvs_betwDateEnrg($request){
-        $cher = $request->cher;
-        return $pv = pvs::with('typepvs','typesourcepvs','typepolicejudiciaire')
-                    ->where('typepvsID',$cher['id_type'])
-                    ->whereBetween('dateEnregPvs', [$cher['de'], $cher['a']])
-                    ->whereNotIn('id',function ($query) {
-                        $query->select('pvsID')->from('user_has_pvs');
-                    })->get();
-    }
+
     public static function stat($request){
         $cher = $request->cher;
 
@@ -139,10 +137,15 @@ class pvsdo{
                     })
         ->count();
 
+        $total_pvs =DB::table('pvs')
+        ->whereBetween('dateEnregPvs',[$cher['de'], $cher['a']])
+        ->count();
+
         return response()->json([
             'Traiter' => $pvs_traiter,
             'NonTraiter' => $pvs_non_traiter,
-            'enCours' => $pvs_cours_traiter
+            'enCours' => $pvs_cours_traiter,
+            'total' => $total_pvs
 
         ],200);
     }

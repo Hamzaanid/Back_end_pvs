@@ -48,6 +48,7 @@ class usrhasplaintdo{
             ->join('plaint_has_fichiers', 'plaints.id','=', 'plaint_has_fichiers.plaintID')
             ->select( 'plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
                        'user_has_plaints.dateMission','user_has_plaints.traitID','user_has_plaints.userID',
+                       'user_has_plaints.descision',
                        'plaint_has_fichiers.lien')
                        ->where('user_has_plaints.userID',$request->user->id)
                        ->whereIn('user_has_plaints.traitID',[1,2])

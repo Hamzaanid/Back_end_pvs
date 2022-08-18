@@ -28,12 +28,12 @@ class CreatePlaintsTable extends Migration
                    ->onUpdate('cascade')
                    ->onDelete('cascade');
             //$table->foreign('SourcePlaintID')->references('idSourcePlaints')->on('source_plaints');
-            $table->string('referencePlaints',45);
+            $table->string('referencePlaints',45)->unique();
             $table->date('datePlaints')->nullable();
             $table->date('dateEnregPlaints');
             $table->date('dateFaits')->nullable();
-            $table->string('EmplaceFaits',45)->nullable();
-            $table->string('sujetPlaints',45);
+            $table->string('EmplaceFaits')->nullable();
+            $table->string('sujetPlaints');
             $table->timestamps();
         });
         Schema::table('plaints', function (Blueprint $table) {

@@ -7,6 +7,7 @@ use App\Http\services\usrhaspvsdo;
 
 use App\Models\userHasPvs;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserHasPvsController extends Controller
 {
@@ -35,13 +36,14 @@ class UserHasPvsController extends Controller
     }
 
     public function getArchivePvs(Request $request){
+        $cher = $request->cherArch;
         return userHasPvs::with('user:id,nom',
                     'pvs:id,dateEnregPvs,sujetpvs,Numpvs',
                     'pvs.hasfichier:pvsID,lien as lien')
                     ->join('pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
-                    ->select('user_has_pvs.userID','pvs.id as pvsID', 'user_has_pvs.traitID')
+                    ->select('user_has_pvs.userID','pvs.id as pvsID', 'user_has_pvs.traitID','user_has_pvs.descision')
                     ->where('traitID',3)
-                    ->where('pvs.Numpvs',$request->Numpvs)
+                    ->whereBetween('pvs.dateEnregPvs',[$cher['de'],$cher['a']])
                     ->get();
     }
 
@@ -79,4 +81,27 @@ class UserHasPvsController extends Controller
             return response()->json(["error"=>"vide"],501);
         }
    }
+
+   public function change_user(Request $request,$id_pvs){
+     $itemupdate = userHasPvs::where('pvsID',$id_pvs)->first();
+     $itemupdate->userID = $request->userID;
+
+     DB::transaction(function () use ($itemupdate){
+         $itemupdate->update();
+     });
+
+   }
+
+   public function statistic_par_vice($iduser){
+    $enCours = userHasPvs::where('userID',$iduser)
+                     ->whereIn('traitID',[2,3])
+                     ->count();
+
+    $traiter = userHasPvs::where('userID',$iduser)
+                     ->where('traitID',1)
+                     ->count();
+         return response()->json(["pvsenCours"=>$enCours,
+                                   "pvstraiter"=>$traiter],200);
+ }
+
 }

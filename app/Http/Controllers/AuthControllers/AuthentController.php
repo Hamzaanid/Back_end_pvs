@@ -80,12 +80,22 @@ class AuthentController extends Controller
         }
     }
 
-    public function profile(Request $request){
+  /*  public function profilefalse(Request $request){
 
         if($userlog = $request->user){
         return response()->json(['user' => $userlog],200);
         }else{
             response()->json(['user','error'],400);
         }
- }
+ }*/
+
+ public function profile(Request $request)
+    {
+            $users = JWTAuth::parseToken()->authenticate();
+
+            return $this->respondWithToken($request->token,$users);
+
+
+
+    }
 }

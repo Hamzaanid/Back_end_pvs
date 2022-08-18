@@ -3,6 +3,7 @@ namespace App\Http\services;
 
 //use App\Models\usersHasPlaints;
 use App\Models\users;
+use Illuminate\Database\Console\Migrations\RollbackCommand;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,15 +34,28 @@ class usersdo{
     }
 
     public static function update($request,$id){
-        //'password' => $request->users['password'],
-        $users = users::find($id);
-        $users->update([
-            'nom' => $request->users['nom'],
-            'email' => $request->users['email'],
-            'numUser'=>$request->users['numUser'],
-            'active' => $request->users['active'],
-            'idRole' => $request->users['idRole']
-        ]);
+        $request->users = json_decode($request->users, true);
+
+        $userUpdate = users::find($id);
+        if($request->users['password']){
+            $userUpdate->password = $request->users['password'];
+        }
+            $userUpdate->nom = $request->users['nom'];
+            $userUpdate->numUser =  $request->users['numUser'];
+            $userUpdate->active =  $request->users['active'];
+            $userUpdate->email = $request->users['email'];
+            $userUpdate->idRole = $request->users['idRole'];
+
+            DB::transaction(function () use ($userUpdate){
+                global $request;
+                if($request->file('img')){
+                    fichierdo::image_signature($request,$userUpdate->id);
+                 }
+                $userUpdate->update();
+
+
+            });
+
     }
     public static function delete($request,$id){
         if($id != $request->user['id']){

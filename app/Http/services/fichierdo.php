@@ -19,50 +19,52 @@ class fichierdo{
 
     public static function image_signature($request,$iduser){
         $file =$request->file('img');
-        $path = Storage::putFileAs("public/img_signature",$file,'user'.$iduser.'.jpeg');
+
+            $path = Storage::putFileAs("public/img_signature",$file,'user'.$iduser.'.jpeg');
     }
 
     public static function store_pdf_pvs($request,$idpvs,$Numpvs)
     {
         /*$rules = ['file' => 'required', 'file.*' => 'mimes:pdf'];
         $validator = $request->validate($rules);
-
         if($validator->fails()){
             return response()->json(["type"=>"format"],503);
         }*/
-
-        $file =$request->file('file');
+        try{
+            $file =$request->file('file');
          $name = $Numpvs;
-
          $path = Storage::putFileAs("public/pvsPDF", $file, $name.'.pdf');
 
              $insert['name'] = $name;
              $insert['lien'] = $path;
              $insert['pvsID'] = $idpvs;
-
              pvs_has_fichier::create($insert);
+
+        }catch(Exception $e){
+            return -1;
+        }
+
 
    }
 
    public static function store_pdf_plaints($request,$idplaint,$reference)
     {
-       /* $rules = ['file' => 'required', 'file.*' => 'mimes:pdf'];
-        $validator = $request->validate($rules);
-
-        if($validator->fails()){
-            return response()->json(["type"=>"format"],503);
-        }*/
-
-        $name = $reference;
-         $file =$request->file('file');
-
-         $path = Storage::putFileAs("public/plaintesPDF", $file, $name.'.pdf');
+        /*$rules = ['file' => 'required', 'file.*' => 'mimes:pdf'];
+        $validator = $request->validate($rules);*/
+         try{
+            $name = $reference;
+            $file =$request->file('file');
+            $path = Storage::putFileAs("public/plaintesPDF", $file, $name.'.pdf');
 
              $insert['name'] = $name;
              $insert['lien'] = $path;
              $insert['plaintID'] = $idplaint;
 
              plaint_has_fichier::create($insert);
+         }catch(Exception){
+            return -1;
+         }
+
 
    }
 

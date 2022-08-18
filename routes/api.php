@@ -48,6 +48,7 @@ Route::namespace('PlaintsControllers')->prefix('/plaint')
     Route::post('/store', [PlaintsController::class, 'store']);
     Route::put('/update/{id}', [PlaintsController::class, 'update']);
     Route::delete('delete/{id}', [PlaintsController::class, 'destroy']);
+
     Route::post('/Byreference',[PlaintsController::class,'getplaintByref']);
     Route::post('/Bydate',[PlaintsController::class,'getplaintBydateEnrg']);
     Route::post('/plaints_of_user',[PlaintsController::class, 'getPlaints_of_user']);
@@ -75,15 +76,14 @@ Route::namespace('PvsControllers')->prefix('/pvs')
     Route::post('/store',[PvsController::class, 'store']);
     Route::put('/update/{id}',[PvsController::class, 'update']);
     Route::delete('/delete/{id}',[PvsController::class, 'destroy']);
-     Route::post('/ByNumpvs',[PvsController::class, 'cherche_byNumpvs']);
-    Route::post('/cherche_pv',[PvsController::class, 'getPvs_betwen_dateEnrg']);
-    Route::post('/Bydate',[PvsController::class,'getpvsBydateEnrg']);
 
+     Route::post('/ByNumpvs',[PvsController::class, 'cherche_byNumpvs']);
+    Route::post('/Bydate',[PvsController::class,'getpvsBydateEnrg']);
     Route::post('/pvs_of_user',[PvsController::class, 'getPvs_of_user']);
 
-
-    Route::post('addPdf/{idpvs}', [PvsController::class, 'PDF_pvs']);
+    Route::post('addPdf/{idpvs}', [PvsController::class,'PDF_pvs']);// inclut dans pvs
     Route::post('/statistique',[PvsController::class,'statistique']);
+
 
     Route::prefix('/type')->group(function(){
         Route::get('/index',[typepvsController::class,'index']);
@@ -105,7 +105,7 @@ Route::namespace('UsersControllers')->prefix('/users')
        ->middleware(['CheckUser'])->group( function() {
     Route::get('/index',[UserController::class,'index']);
     Route::post('/store', [UserController::class, 'store']);
-    Route::put('/update/{id}', [UserController::class, 'update']);
+    Route::post('/update/{id}', [UserController::class, 'update']);// inserer image password
     Route::delete('/delete/{id}', [UserController::class, 'destroy']);
     Route::get('/viceProc',[UserController::class,'index_viceProc']);
     Route::post('/img_sign',[UserController::class,'img_sign']);
@@ -126,6 +126,9 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
         Route::post('/getArchiveplaint',[UserHasPlaintsController::class,'getArchivePlaint']);
 
+        Route::get('/statistic_vice/{iduser}',[UserHasPlaintsController::class,'statistic_par_vice']);
+        Route::post('/change_user/{id_plaint}',[UserHasPlaintsController::class,'change_user']);
+
         Route::post('/signer_plainte/{id_plainte}',[UserHasPlaintsController::class,'signer_plainte']);
         Route::post('/descision/{id_plainte}',[UserHasPlaintsController::class,'update_descision_plainte']);
 
@@ -142,6 +145,9 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::delete('/delete/{id}',[UserHasPvsController::class,'destroy']);
         Route::get('/mespvs',[UserHasPvsController::class,'get_mes_pvs']);
         Route::post('/getArchivepvs',[UserHasPvsController::class,'getArchivePvs']);
+
+        Route::post('/change_user/{id_pvs}',[UserHasPvsController::class,'change_user']);
+        Route::get('/statistic_vice/{iduser}',[UserHasPvsController::class,'statistic_par_vice']);
 
         Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
         Route::post('/descision/{id_pvs}',[UserHasPvsController::class,'update_descision_pvs']);

@@ -18,15 +18,13 @@ class PvsController extends Controller
                    ->paginate(10);
     }
 
-    public function getPvs_betwen_dateEnrg(Request $request){
-       return pvsdo::get_pvs_betwDateEnrg($request);
-    }
+
 
 
     public function cherche_byNumpvs(Request $request){
 
                     return $pv = userHasPvs:: with('pvs','pvs.hasfichier:pvsID,lien','pvs.typepvs')
-                            ->select('pvs.id as pvsID','user_has_pvs.traitID')
+                            ->select('pvs.id as pvsID','user_has_pvs.traitID','user_has_pvs.descision')
                             ->rightJoin('pvs','pvs.id','=','user_has_pvs.pvsID')
                             ->where('Numpvs',$request->Numpvs)
                             ->get();

@@ -5,6 +5,7 @@ use App\Models\plaint_has_fichier;
 use App\Models\Plaints;
 use App\Models\userHasPlaints;
 use Exception;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
@@ -12,22 +13,33 @@ class plaintsdo{
 
     public static function create($request)
         { //ajouter plaints
-            $plaint= Plaints::create([
-                "contreInconnu"=>$request->plaint['contreInconnu'],
-                "TypePlaintID"=> $request->plaint['TypePlaintID'],
-                "SourcePlaintID" => $request->plaint['SourcePlaintID'],
-                "referencePlaints" => $request ->plaint['referencePlaints'],
-                "datePlaints"=> $request->plaint['datePlaints'],
-                "dateEnregPlaints"=> $request->plaint['dateEnregPlaints'],
-                "dateFaits"=> $request ->plaint['dateFaits'],
-                "EmplaceFaits" => $request -> plaint['EmplaceFaits'],
-                "sujetPlaints" => $request -> plaint['sujetPlaints']
-            ]);
-            $data[0]= $plaint->id;
-            $data[1]= $request ->plaint['referencePlaints'];
-            return $data;
 
-            //lie les data partie avec plaint
+            $newPlaint = new Plaints();
+            //$newPlaint->datePlaints = $request->plaint['datePlaints'];
+            //$newPlaint->contreInconnu = $request->plaint['contreInconnu'];
+            //$newPlaint->dateFaits = $request->plaint['dateFaits'];
+           /* if($request->plaint['EmplaceFaits']){
+                $newPlaint->EmplaceFaits = $request->EmplaceFaits;
+            }*/
+            $newPlaint->TypePlaintID = $request->TypePlaintID;
+            $newPlaint->SourcePlaintID = $request->SourcePlaintID;
+            $newPlaint->referencePlaints = $request->referencePlaints;
+            $newPlaint->dateEnregPlaints = $request->dateEnregPlaints;
+            $newPlaint->sujetPlaints = $request->sujetPlaints;
+
+            $succes = 1;
+            DB::transaction(function () use ($newPlaint,$succes){
+                global $request,$succes;
+                $newPlaint->save();
+
+                 $succes = fichierdo::store_pdf_plaints($request,$newPlaint->id,$newPlaint->referencePlaints);
+            });
+            if($succes == -1){
+                return response()->json(["error"],501);
+            }else{
+                return response()->json(["succes"],200);
+            }
+
         }
 
         public static function update($request,$id)
@@ -38,10 +50,10 @@ class plaintsdo{
                     "contreInconnu" => $request -> plaint['contreInconnu'],
                     "TypePlaintID" => $request -> plaint['TypePlaintID'],
                     "SourcePlaintID" => $request -> plaint['SourcePlaintID'],
-                    "referencePlaints" => $request -> plaint['referencePlaints'],
+                   "referencePlaints" => $request -> plaint['referencePlaints'],
                     "datePlaints" => $request -> plaint['datePlaints'],
 
-                    //"dateEnregPlaints" => $request -> plaint['dateEnregPlaints'],
+                   "dateEnregPlaints" => $request -> plaint['dateEnregPlaints'],
 
                     "dateFaits" => $request -> plaint['dateFaits'],
                     "EmplaceFaits" => $request -> plaint['EmplaceFaits'],
@@ -138,7 +150,7 @@ class plaintsdo{
         ->count();
 
         $plaint_cours_traiter =DB::table('plaints')
-        ->whereBetween('dateEnregPlaints',[$cher['de'], $cher['a']]) //!!!
+        ->whereBetween('dateEnregPlaints',[$cher['de'], $cher['a']]) //
         ->whereIn('id',function ($query) {
                     global $request;
                  $query->select('plaintID')
@@ -147,10 +159,15 @@ class plaintsdo{
                     })
         ->count();
 
+        $total_plaints =DB::table('plaints')
+        ->whereBetween('dateEnregPlaints',[$cher['de'], $cher['a']])
+        ->count();
+
         return response()->json([
             'Traiter' => $plaint_traiter,
             'NonTraiter' => $plaint_non_traiter,
-            'enCours' => $plaint_cours_traiter
+            'enCours' => $plaint_cours_traiter,
+            'total' => $total_plaints
 
         ],200);
     }

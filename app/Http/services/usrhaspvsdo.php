@@ -45,6 +45,7 @@ class usrhaspvsdo{
     ->join('pvs_has_fichiers', 'pvs.id', '=', 'pvs_has_fichiers.pvsID')
     ->select( 'pvs.id', 'pvs.Numpvs', 'pvs.dateEnregPvs',
                'user_has_pvs.dateMission','user_has_pvs.traitID','user_has_pvs.userID',
+               'user_has_pvs.descision',
                'pvs_has_fichiers.lien')
                ->where('user_has_pvs.userID',$request->user->id)
                ->whereIn('user_has_pvs.traitID',[1,2])

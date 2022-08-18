@@ -35,6 +35,7 @@ class UserController extends Controller
     {
        return usersdo::create($request);
     }
+
     public function img_sign(Request $request){
         fichierdo::image_signature($request, (int)$request->iduser);
     }
@@ -42,7 +43,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        usersdo::update($request,$id);
+       return usersdo::update($request,$id);
     }
 
 

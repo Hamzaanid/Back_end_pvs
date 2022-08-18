@@ -38,13 +38,14 @@ class UserHasPlaintsController extends Controller
     }
 
     public function getArchivePlaint(Request $request){
+        $cher = $request->cherArch;
         return UserHasPlaints::with('user:id,nom',
                     'plaint:id,dateEnregPlaints,sujetPlaints,referencePlaints',
                     'plaint.hasfichier:plaintID,lien as lien')
                     ->join('plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
-                    ->select('user_has_plaints.userID','plaints.id as plaintID', 'user_has_plaints.traitID')
+                    ->select('user_has_plaints.userID','plaints.id as plaintID', 'user_has_plaints.traitID','user_has_plaints.descision')
                     ->where('traitID',3)
-                    ->where('plaints.referencePlaints',$request->referenece)
+                    ->whereBetween('plaints.dateEnregPlaints',[$cher['de'], $cher['a']])
                     ->get();
     }
 
@@ -83,5 +84,26 @@ class UserHasPlaintsController extends Controller
     public function destroy($id)
     {
         usrhasplaintdo::delete($id);
+    }
+
+    public function change_user(Request $request,$id_plaint){
+        $itemupdate = UserHasPlaints::where('plaintID',$id_plaint)->first();
+        $itemupdate->userID = $request->userID;
+
+        DB::transaction(function () use ($itemupdate){
+            $itemupdate->update();
+        });
+
+      }
+    public function statistic_par_vice($iduser){
+       $traiter = UserHasPlaints::where('userID',$iduser)
+                        ->whereIn('traitID',[2,3])
+                        ->count();
+
+       $enCours = UserHasPlaints::where('userID',$iduser)
+                        ->where('traitID',1)
+                        ->count();
+            return response()->json(["plaintsenCours"=>$enCours,
+                                      "plaintstraiter"=>$traiter],200);
     }
 }
