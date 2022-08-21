@@ -4,19 +4,18 @@
     <title>Laravel 8 Generate PDF From View</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
-        .space{
-            height: 250px;
-        }
         p{
-            font-size: 26px;
+            font-size: 20px;
+
         }
 
         .image{
-            margin: 30px;
-      width:250px;
-      height:250px;
+      margin-top: 35px;
+      margin-right: 50%;
+      width:160px;
+      height: 160px;
       overflow:hidden;
-      display:block;
+      display:inline-block;
       background-color:white; /*not necessary, just to show the image box, can be added to img*/
     }
     </style>
@@ -24,17 +23,12 @@
 
 <body>
     <div dir="rtl">
-      <h1 style="text-decoration: underline;">القرار :</h1> <p> {{ $descision }} </p>
+      <h1 style="text-decoration: underline;">القرار :</h1>
+       <p> {{ $descision }} </p>
+          <div class="image">
+            <img src="{{ storage_path('app/public/img_signature/user'. $id .'.jpeg') }}">
+          </div>
     </div>
-
-    <div class="space"></div>
-
-    <div class="image">
-        <p>توقيع</p>
-        <img src="{{ storage_path('app/public/img_signature/user'. $id .'.jpeg') }}">
-    </div>
-
-
 
 </body>
 </html>

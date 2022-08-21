@@ -108,7 +108,7 @@ class plaintsdo{
                         $query->select('plaintID')
                             ->from('user_has_plaints');
                         })->whereBetween('dateEnregPlaints',[$request->dateEnrg['de'],$request->dateEnrg['a']])
-                        ->get();
+                        ->paginate(10);
         }
 
         public static function getPlaints_of_user($request){

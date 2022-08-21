@@ -44,7 +44,7 @@ class UserHasPvsController extends Controller
                     ->select('user_has_pvs.userID','pvs.id as pvsID', 'user_has_pvs.traitID','user_has_pvs.descision')
                     ->where('traitID',3)
                     ->whereBetween('pvs.dateEnregPvs',[$cher['de'],$cher['a']])
-                    ->get();
+                    ->paginate(20);
     }
 
     public function destroy($id)

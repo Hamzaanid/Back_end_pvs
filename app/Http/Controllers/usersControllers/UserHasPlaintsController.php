@@ -46,7 +46,7 @@ class UserHasPlaintsController extends Controller
                     ->select('user_has_plaints.userID','plaints.id as plaintID', 'user_has_plaints.traitID','user_has_plaints.descision')
                     ->where('traitID',3)
                     ->whereBetween('plaints.dateEnregPlaints',[$cher['de'], $cher['a']])
-                    ->get();
+                    ->paginate(20);
     }
 
 

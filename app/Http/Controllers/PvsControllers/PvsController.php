@@ -36,7 +36,7 @@ class PvsController extends Controller
                     ->whereNotIn('id',function ($query) {
                         $query->select('pvsID')
                             ->from('user_has_pvs');
-                        })->get();
+                        })->paginate(10);
 
 
     }
