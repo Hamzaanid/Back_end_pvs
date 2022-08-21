@@ -25,7 +25,7 @@ class CreatePvsTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
 
-            $table->string('Numpvs');
+            $table->string('Numpvs')->unique();
             $table->date('dateEnregPvs');
             $table->string('sujetpvs',150);
 

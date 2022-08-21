@@ -95,7 +95,10 @@ class UserHasPlaintsController extends Controller
         });
 
       }
-    public function statistic_par_vice($iduser){
+    public function statistic_par_vice(Request $request ,$iduser){
+        if($iduser == 0){
+            $iduser = $request->user->id;// l'utilisateur qui envoi la requete
+        }
        $traiter = UserHasPlaints::where('userID',$iduser)
                         ->whereIn('traitID',[2,3])
                         ->count();
@@ -105,5 +108,16 @@ class UserHasPlaintsController extends Controller
                         ->count();
             return response()->json(["plaintsenCours"=>$enCours,
                                       "plaintstraiter"=>$traiter],200);
+    }
+
+    public function affiche_plainte_statistic(Request $request)
+    {
+        return $pl = userHasPlaints::with('plaint:id,referencePlaints,dateEnregPlaints,sujetPlaints',
+                 'plaint.hasfichier:plaintID,lien as lien')
+            ->select('user_has_plaints.plaintID','user_has_plaints.traitID','user_has_plaints.dateMission',
+                         'user_has_plaints.userID')
+            ->where('userID', $request->userID)
+            ->where('traitID', 1)
+            ->get();
     }
 }

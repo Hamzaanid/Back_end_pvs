@@ -92,16 +92,30 @@ class UserHasPvsController extends Controller
 
    }
 
-   public function statistic_par_vice($iduser){
-    $enCours = userHasPvs::where('userID',$iduser)
+   public function statistic_par_vice(Request $request,$iduser){
+    if($iduser == 0){
+        $iduser = $request->user->id;// l'utilisateur qui envoi la requete
+    }
+    $traiter = userHasPvs::where('userID',$iduser)
                      ->whereIn('traitID',[2,3])
                      ->count();
 
-    $traiter = userHasPvs::where('userID',$iduser)
+    $enCours = userHasPvs::where('userID',$iduser)
                      ->where('traitID',1)
                      ->count();
          return response()->json(["pvsenCours"=>$enCours,
                                    "pvstraiter"=>$traiter],200);
- }
+     }
+
+     public function affiche_plainte_statistic(Request $request)
+     {
+         return $pl = userHasPvs::with('pvs:id,Numpvs,dateEnregPvs,sujetpvs',
+                  'pvs.hasfichier:pvsID,lien as lien')
+             ->select('user_has_pvs.pvsID','user_has_pvs.traitID','user_has_pvs.dateMission',
+                          'user_has_pvs.userID')
+             ->where('userID', $request->userID)
+             ->where('traitID', 1)
+             ->get();
+     }
 
 }

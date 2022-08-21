@@ -128,14 +128,12 @@ Route::namespace('UsersControllers')->prefix('/users')
 
         Route::get('/statistic_vice/{iduser}',[UserHasPlaintsController::class,'statistic_par_vice']);
         Route::post('/change_user/{id_plaint}',[UserHasPlaintsController::class,'change_user']);
+        Route::post('/affiche_plainte_statistic',[UserHasPlaintsController::class,'affiche_plainte_statistic']);
 
         Route::post('/signer_plainte/{id_plainte}',[UserHasPlaintsController::class,'signer_plainte']);
         Route::post('/descision/{id_plainte}',[UserHasPlaintsController::class,'update_descision_plainte']);
 
     });
-
-
-
 
 
     Route::prefix('/haspvs')->group(function(){
@@ -148,6 +146,7 @@ Route::namespace('UsersControllers')->prefix('/users')
 
         Route::post('/change_user/{id_pvs}',[UserHasPvsController::class,'change_user']);
         Route::get('/statistic_vice/{iduser}',[UserHasPvsController::class,'statistic_par_vice']);
+        Route::post('/affiche_pvs_statistic',[UserHasPvsController::class,'affiche_plainte_statistic']);
 
         Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
         Route::post('/descision/{id_pvs}',[UserHasPvsController::class,'update_descision_pvs']);
@@ -155,5 +154,4 @@ Route::namespace('UsersControllers')->prefix('/users')
 
 });
 
-############################-----Data Parties apis-----##########################
 
