@@ -6,7 +6,6 @@ use App\Http\Controllers\controller;
 use App\Http\services\fichierdo;
 use App\Http\services\usrhasplaintdo;
 use App\Models\UserHasPlaints;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,8 +23,21 @@ class UserHasPlaintsController extends Controller
 
 
     public function store(Request $request)
-    {
-        return usrhasplaintdo::create($request);
+    {  //return usrhasplaintdo::create($request);
+        $ids = $request->userhasplaint['plaintID'];
+        if($ids == null || $request->userhasplaint['userID'] == null){
+             return response()->json(['err'=>'connot read array'],500);
+            }
+        foreach($ids as $id_plaint){
+        userHasPlaints::create([
+            'userID'=>$request->userhasplaint['userID'],
+            'plaintID' => $id_plaint,
+            'traitID' => $request->userhasplaint['traitID'],
+            'dateMission'=> $request->userhasplaint['dateMission'],
+            'descision'=> $request->userhasplaint['descision']
+
+        ]);
+       }
     }
 
 
@@ -51,8 +63,17 @@ class UserHasPlaintsController extends Controller
 
 
     public function get_mes_plaintes(Request $request)
-    {
-        return usrhasplaintdo::mesplaintes($request);
+    { // return usrhasplaintdo::mesplaintes($request);
+        return $plaints = DB::table('plaints')
+            ->join('user_has_plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
+            ->join('plaint_has_fichiers', 'plaints.id','=', 'plaint_has_fichiers.plaintID')
+            ->select( 'plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
+                       'user_has_plaints.dateMission','user_has_plaints.traitID','user_has_plaints.userID',
+                       'user_has_plaints.descision',
+                       'plaint_has_fichiers.lien')
+                       ->where('user_has_plaints.userID',$request->user->id)
+                       ->whereIn('user_has_plaints.traitID',[1,2])
+                       ->get();
     }
 
     public function signer_plainte(Request $request, $id_plainte)
@@ -60,7 +81,12 @@ class UserHasPlaintsController extends Controller
         $descision = $request->userhasplaint['descision'];
         $lien = $request->userhasplaint['lien'];
         if ($descision != '') {
-            usrhasplaintdo::update($request, $id_plainte);
+           // usrhasplaintdo::update($request, $id_plainte);
+           $usershasplaint = userHasPlaints::where('plaintID',$id_plainte)->first();
+           $usershasplaint->update([
+               'traitID' => $request->userhasplaint['traitID'],
+               'descision'=>$request->userhasplaint['descision']
+           ]);
             return fichierdo::signerPDF($request, $descision, $lien);
         } else {
             return response()->json(["error" => "vide"], 501);
@@ -74,7 +100,11 @@ class UserHasPlaintsController extends Controller
         $userID = $request->userhasplaint['userID'];
 
         if ($descision != '' && $userID != '') {
-            usrhasplaintdo::update($request, $id_plainte);
+            $usershasplaint = userHasPlaints::where('plaintID',$id_plainte)->first();
+            $usershasplaint->update([
+            'traitID' => $request->userhasplaint['traitID'],
+            'descision'=>$request->userhasplaint['descision']
+        ]);
             return fichierdo::update_descision_pdf($userID, $descision, $lien);
         } else {
             return response()->json(["error" => "vide"], 501);
@@ -82,8 +112,9 @@ class UserHasPlaintsController extends Controller
     }
 
     public function destroy($id)
-    {
-        usrhasplaintdo::delete($id);
+    { //usrhasplaintdo::delete($id);
+        $userhasplaint = userHasPlaints::find($id);
+        $userhasplaint->delete();
     }
 
     public function change_user(Request $request,$id_plaint){

@@ -24,7 +24,20 @@ class UserHasPvsController extends Controller
 
     public function store(Request $request)
     {
-        return usrhaspvsdo::create($request);
+       // return usrhaspvsdo::create($request);
+       $ids = $request->userhaspvs['pvsID'];
+       if($ids == null || $request->userhaspvs['userID'] == null){
+            return response()->json(['err'=>'connot read array'],500);
+           }
+       foreach($ids as $id_pv){
+           userHasPvs::create([
+           'userID'=>$request->userhaspvs['userID'],
+           'pvsID' => $id_pv,
+           'traitID' => $request->userhaspvs['traitID'],
+           'descision'=> $request->userhaspvs['descision'],
+           'dateMission'=> $request->userhaspvs['dateMission']
+       ]);
+      }
     }
 
     public function updateTrait(Request $request,$id)
@@ -49,11 +62,23 @@ class UserHasPvsController extends Controller
 
     public function destroy($id)
     {
-        usrhaspvsdo::delete($id);
+       // usrhaspvsdo::delete($id);
+       $userhaspvs = userHasPvs::find($id);
+       $userhaspvs->delete();
     }
 
     public function get_mes_pvs(Request $request){
-        return usrhaspvsdo::mespvs($request);
+       // return usrhaspvsdo::mespvs($request);
+       return $pvs = DB::table('pvs')
+       ->join('user_has_pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
+       ->join('pvs_has_fichiers', 'pvs.id', '=', 'pvs_has_fichiers.pvsID')
+       ->select( 'pvs.id', 'pvs.Numpvs', 'pvs.dateEnregPvs',
+                  'user_has_pvs.dateMission','user_has_pvs.traitID','user_has_pvs.userID',
+                  'user_has_pvs.descision',
+                  'pvs_has_fichiers.lien')
+                  ->where('user_has_pvs.userID',$request->user->id)
+                  ->whereIn('user_has_pvs.traitID',[1,2,4]) // 4 Enquete pas valider
+                  ->get();
     }
 
     public function signer_pvs(Request $request,$id_pvs){
@@ -61,8 +86,13 @@ class UserHasPvsController extends Controller
         $descision = $request->userhaspvs['descision'];
         $lien = $request->userhaspvs['lien'];
         if($descision != ''){
-            usrhaspvsdo::update($request,$id_pvs);
-        return fichierdo::signerPDF($request,$descision,$lien);
+           // usrhaspvsdo::update($request,$id_pvs);
+            $userhaspvs = userHasPvs::where('pvsID',$id_pvs)->first();
+            $userhaspvs->update([
+            'traitID' => $request->userhaspvs['traitID'],
+            'descision'=> $request->userhaspvs['descision']
+            ]);
+                return fichierdo::signerPDF($request,$descision,$lien);
         }else{
             return response()->json(["error"=>"vide"],501);
         }
@@ -75,7 +105,12 @@ class UserHasPvsController extends Controller
         $userID = $request->userhaspvs['userID'];
 
         if($descision != '' && $userID != ''){
-            usrhaspvsdo::update($request,$id_pvs);
+           // usrhaspvsdo::update($request,$id_pvs);
+           $userhaspvs = userHasPvs::where('pvsID',$id_pvs)->first();
+           $userhaspvs->update([
+               'traitID' => $request->userhaspvs['traitID'],
+               'descision'=> $request->userhaspvs['descision']
+           ]);
             return fichierdo::update_descision_pdf($userID,$descision,$lien);
         }else{
             return response()->json(["error"=>"vide"],501);
@@ -116,6 +151,19 @@ class UserHasPvsController extends Controller
              ->where('userID', $request->userID)
              ->where('traitID', 1)
              ->get();
+     }
+
+     public function pvs_enquete_vice(Request $request){
+        return $pvs = DB::table('pvs')
+         ->join('user_has_pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
+         ->join('pvs_has_fichiers', 'pvs.id', '=', 'pvs_has_fichiers.pvsID')
+         ->select( 'user_has_pvs.id as userhaspvsID', 'pvs.id', 'pvs.Numpvs', 'pvs.dateEnregPvs',
+                    'user_has_pvs.dateMission','user_has_pvs.descision',
+                    'user_has_pvs.traitID','user_has_pvs.userID',
+                    'pvs_has_fichiers.lien')
+                    ->where('user_has_pvs.userID',$request->userID)
+                    ->where('user_has_pvs.traitID',4)
+                    ->get();
      }
 
 }

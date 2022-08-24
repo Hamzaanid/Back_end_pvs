@@ -18,6 +18,7 @@ use App\Http\Controllers\UsersControllers\UserHasPlaintsController;
 use App\Http\Controllers\UsersControllers\UserHasPvsController;
 
 use App\Http\Controllers\AuthControllers\AuthentController;
+use App\Http\Controllers\Dossiers_enquete\dossierEnqueteController;
 use App\Http\Controllers\PDFController;
 
 
@@ -134,7 +135,7 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::post('/descision/{id_plainte}',[UserHasPlaintsController::class,'update_descision_plainte']);
 
     });
-
+############################# userhaspvs ###############"
 
     Route::prefix('/haspvs')->group(function(){
         Route::post('/index',[UserHasPvsController::class,'index']);
@@ -150,8 +151,17 @@ Route::namespace('UsersControllers')->prefix('/users')
 
         Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
         Route::post('/descision/{id_pvs}',[UserHasPvsController::class,'update_descision_pvs']);
+
+        Route::post('/pvs_enquete',[UserHasPvsController::class, 'pvs_enquete_vice']);
+    });
+});
+
+Route::namespace('Dossiers_enquete')->prefix('/Enquete')
+    ->middleware(['CheckUser'])->group( function() {
+    Route::post('/pvs_enquete',[dossierEnqueteController::class,'get_pvs_enquete']);
+    Route::post('/storeDossier',[dossierEnqueteController::class,'storeDossier']);
+
     });
 
-});
 
 
