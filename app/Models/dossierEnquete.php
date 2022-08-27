@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class dossierEnquete extends Model
 {
     use HasFactory;
-    protected $fillable =['NumDossier','type_dossierID','chambre_enquete',
-                           'juge_enqueteID','userID','pvsID','lien'];
+    protected $fillable =['NumDossier','type_dossierID','chambre_enquete','dateEnreg',
+                           'juge_enqueteID','userID','pvsID','lienDescision','lien'];
 
     protected $hidden=['created_at','updated_at'];
 

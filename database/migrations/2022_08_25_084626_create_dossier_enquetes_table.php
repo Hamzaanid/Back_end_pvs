@@ -10,6 +10,7 @@ class CreateDossierEnquetesTable extends Migration
     {
         Schema::create('dossier_enquetes', function (Blueprint $table) {
             $table->id();
+            $table->date('dateEnreg');
             $table->string('NumDossier',50)->unique();
             $table->foreignId('type_dossierID')->constrained('type_dossiers');
             $table->enum('chambre_enquete',['الغرفة 1','الغرفة 2']);
@@ -18,6 +19,7 @@ class CreateDossierEnquetesTable extends Migration
             $table->foreignId('pvsID')->constrained('pvs');
             $table->string('lien');
             $table->boolean('traiter')->default(false);
+            $table->string('lienDescision')->nullable();
             $table->timestamps();
         });
     }

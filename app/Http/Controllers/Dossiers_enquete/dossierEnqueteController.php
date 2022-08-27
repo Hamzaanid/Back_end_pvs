@@ -61,6 +61,7 @@ class dossierEnqueteController extends Controller
         $pvsToDossier->traitID = 6; // apres ou 6 est un : dossier
 
         $newDossier->NumDossier = $request->NumDossier;
+        $newDossier->dateEnreg = $request->dateEnreg;
         $newDossier->type_dossierID = $request->type_dossierID;
         $newDossier->chambre_enquete = $request->chambre_enquete;
         $newDossier->juge_enqueteID = $request->juge_enqueteID;
@@ -131,6 +132,7 @@ class dossierEnqueteController extends Controller
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
                          ->where('traiter',false)
                          ->where('juge_enqueteID',$request->user['id'])
+                         ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
 }
