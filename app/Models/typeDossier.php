@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class typeDossier extends Model
 {
     use HasFactory;
+    protected $fillable=["id","nom"];
 }

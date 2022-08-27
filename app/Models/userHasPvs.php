@@ -22,6 +22,9 @@ class userHasPvs extends Model
     public function pvs(){
         return $this->belongsTo(pvs::class,'pvsID');
     }
+    public function dossiersEnquete(){
+        return $this->hasOne(dossierEnquete::class);
+    }
 
 
 }

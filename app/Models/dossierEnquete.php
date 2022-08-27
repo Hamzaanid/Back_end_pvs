@@ -9,7 +9,19 @@ class dossierEnquete extends Model
 {
     use HasFactory;
     protected $fillable =['NumDossier','type_dossierID','chambre_enquete',
-                           'juge_enqueteID','usrhaspvsID','lien'];
+                           'juge_enqueteID','userID','pvsID','lien'];
+
     protected $hidden=['created_at','updated_at'];
+
+    public function user(){
+        return $this->belongsTo(users::class,'userID');
+    }
+    public function pvs(){
+        return $this->belongsTo(pvs::class,'pvsID');
+    }
+
+    public function juge_enquete(){
+        return $this->belongsTo(users::class,'juge_enqueteID');
+    }
 
 }

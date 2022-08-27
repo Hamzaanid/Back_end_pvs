@@ -23,3 +23,4 @@ Route::get('/' ,function () {
 Route::get('/file',[PDFController::class,'index']);
 Route::get('/dossiers_pvs/{name}',[PDFController::class,'get_URL_pvs']);
 Route::get('/dossiers_plaintes/{name}',[PDFController::class,'get_URL_plaintes']);
+Route::get('/dossiersEnquete/{name}',[PDFController::class,'getPdfEnquete']);

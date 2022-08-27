@@ -14,8 +14,10 @@ class CreateDossierEnquetesTable extends Migration
             $table->foreignId('type_dossierID')->constrained('type_dossiers');
             $table->enum('chambre_enquete',['الغرفة 1','الغرفة 2']);
             $table->foreignId('juge_enqueteID')->constrained('users');
-            $table->foreignId('usrhaspvsID')->constrained('user_has_pvs');
+            $table->foreignId('userID')->constrained('users');
+            $table->foreignId('pvsID')->constrained('pvs');
             $table->string('lien');
+            $table->boolean('traiter')->default(false);
             $table->timestamps();
         });
     }

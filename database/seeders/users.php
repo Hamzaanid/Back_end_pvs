@@ -30,6 +30,14 @@ class users extends Seeder
                 'nom' => 'user'
             ]);
 
+            DB::table('roles')->insert([
+                'nom' => 'j_enquête'
+            ]);
+
+            DB::table('roles')->insert([
+                'nom' => 'f_enquête'
+            ]);
+
             DB::table('users')->insert([
                 'numUser'=> "0655667788",
                  'active' => true,
@@ -64,6 +72,23 @@ class users extends Seeder
                     'password' => "user",
                     'idRole'   => 4
                     ]);
+
+                DB::table('users')->insert([
+                        'numUser'=> "065566",
+                        'active' => true,
+                        'nom'      =>  "j_enquete",
+                        'email'    => "j_enquete@gmail.com",
+                        'password' => "j_enquete",
+                        'idRole'   => 5
+                        ]);
+               DB::table('users')->insert([
+                            'numUser'=> "065566666",
+                            'active' => true,
+                            'nom'      =>  "f_enquete",
+                            'email'    => "f_enquete@gmail.com",
+                            'password' => "f_enquete",
+                            'idRole'   => 6
+                            ]);
 
 
     }

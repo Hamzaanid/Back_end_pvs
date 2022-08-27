@@ -158,8 +158,23 @@ Route::namespace('UsersControllers')->prefix('/users')
 
 Route::namespace('Dossiers_enquete')->prefix('/Enquete')
     ->middleware(['CheckUser'])->group( function() {
+    Route::get('/index_juge',[dossierEnqueteController::class,'index_juge']);
+    Route::get('/index_type',[dossierEnqueteController::class,'index_type']);
     Route::post('/pvs_enquete',[dossierEnqueteController::class,'get_pvs_enquete']);
+    Route::get('/all_pvs_enquete',[dossierEnqueteController::class,'all_pvs_enquete']);
+
     Route::post('/storeDossier',[dossierEnqueteController::class,'storeDossier']);
+
+    ###### cherche un dossier dans un chambre et paginate par chambre #######
+    Route::post('/EnqueteChambreCherche/{chambre}',[dossierEnqueteController::class,'EnqueteChambreCherche']);
+    Route::get('/paginateChambre1',[dossierEnqueteController::class,'paginateChambre1']);
+    Route::get('/paginateChambre2',[dossierEnqueteController::class,'paginateChambre2']);
+    ######### tous les dossiers ################
+    Route::post('/chercheDossier',[dossierEnqueteController::class,'chercheDossier']);
+    Route::get('/paginateTraiter',[dossierEnqueteController::class,'paginateTraiter']);
+    ############# dossiersEnquetes d'un juge (chambre)#########
+    Route::post('/dossiersJuge',[dossierEnqueteController::class,'dossiersJuge']);
+    Route::get('/paginate_mes_fileJuge',[dossierEnqueteController::class,'s']);
 
     });
 
