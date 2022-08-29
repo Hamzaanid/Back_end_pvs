@@ -112,7 +112,7 @@ Route::namespace('UsersControllers')->prefix('/users')
     Route::post('/img_sign',[UserController::class,'img_sign']);
 
     Route::post('/logout',[AuthentController::class,'logout']);
-    Route::post('/profile',[AuthentController::class,'profile']);
+    Route::get('/profile',[AuthentController::class,'profile']);
 
     Route::prefix('/role')->group(function(){
         Route::get('/index',[RoleController::class,'index']);
@@ -125,6 +125,9 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/updateTrait/{id}',[UserHasPlaintsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPlaintsController::class,'destroy']);
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
+        
+        Route::get('/plaint_a_confirmer',[UserHasPlaintsController::class,'plaint_a_confirmer']);
+
         Route::post('/getArchiveplaint',[UserHasPlaintsController::class,'getArchivePlaint']);
 
         Route::get('/statistic_vice/{iduser}',[UserHasPlaintsController::class,'statistic_par_vice']);
@@ -147,7 +150,7 @@ Route::namespace('UsersControllers')->prefix('/users')
 
         Route::post('/change_user/{id_pvs}',[UserHasPvsController::class,'change_user']);
         Route::get('/statistic_vice/{iduser}',[UserHasPvsController::class,'statistic_par_vice']);
-        Route::post('/affiche_pvs_statistic',[UserHasPvsController::class,'affiche_plainte_statistic']);
+        Route::post('/affiche_pvs_statistic',[UserHasPvsController::class,'affiche_pvs_statistic']);
 
         Route::post('/signer_pvs/{id_pvs}',[UserHasPvsController::class,'signer_pvs']);
         Route::post('/descision/{id_pvs}',[UserHasPvsController::class,'update_descision_pvs']);
@@ -176,7 +179,11 @@ Route::namespace('Dossiers_enquete')->prefix('/Enquete')
     Route::post('/dossiersJuge',[dossierEnqueteController::class,'dossiersJuge']);
     Route::get('/paginate_mes_fileJuge',[dossierEnqueteController::class,'paginate_mes_fileJuge']);
 
-    });
+    Route::post('/addDescisionEnquete/{ND}',[dossierEnqueteController::class,'addDescisionEnquete']);
+
+    Route::post('/dossiersParVice',[dossierEnqueteController::class,'dossiersParVice']);
+    Route::get('/paginate_mes_fileVice',[dossierEnqueteController::class,'paginate_mes_fileVice']);
+});
 
 
 

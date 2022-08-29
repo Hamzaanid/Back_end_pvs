@@ -54,8 +54,10 @@ class UserHasPvsController extends Controller
                     'pvs:id,dateEnregPvs,sujetpvs,Numpvs',
                     'pvs.hasfichier:pvsID,lien as lien')
                     ->join('pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
-                    ->select('user_has_pvs.userID','pvs.id as pvsID', 'user_has_pvs.traitID','user_has_pvs.descision')
-                    ->where('traitID',3)
+                    ->select('user_has_pvs.userID','pvs.id as pvsID', 'user_has_pvs.traitID',
+                               'user_has_pvs.descision')
+                    ->where('traitID','>=',5)
+                    ->Orwhere('traitID',3)
                     ->whereBetween('pvs.dateEnregPvs',[$cher['de'],$cher['a']])
                     ->paginate(20);
     }
@@ -132,7 +134,7 @@ class UserHasPvsController extends Controller
         $iduser = $request->user->id;// l'utilisateur qui envoi la requete
     }
     $traiter = userHasPvs::where('userID',$iduser)
-                     ->whereIn('traitID',[2,3])
+                     ->where('traitID','>=',2)
                      ->count();
 
     $enCours = userHasPvs::where('userID',$iduser)
@@ -142,7 +144,7 @@ class UserHasPvsController extends Controller
                                    "pvstraiter"=>$traiter],200);
      }
 
-     public function affiche_plainte_statistic(Request $request)
+     public function affiche_pvs_statistic(Request $request)
      {
          return $pl = userHasPvs::with('pvs:id,Numpvs,dateEnregPvs,sujetpvs',
                   'pvs.hasfichier:pvsID,lien as lien')

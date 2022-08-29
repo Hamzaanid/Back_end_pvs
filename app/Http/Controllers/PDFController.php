@@ -57,6 +57,22 @@ class PDFController extends Controller
 
     }
 
+    public function DescisionEnquetePDF($name){
+
+        $file = storage_path('app/public/DescisionEnquete/'.$name);
+        $pdf = new Fpdi();
+
+            $pageCount =  $pdf->setSourceFile($file);
+         for ($i=0; $i < $pageCount; $i++) {
+                $pdf->AddPage();
+                $tplId = $pdf->importPage($i+1);
+                $pdf->useTemplate($tplId);
+            }
+
+            return $pdf->Output();
+
+    }
+
 
   public function couper(){
 

@@ -36,7 +36,7 @@ class dossierEnqueteController extends Controller
     public function get_pvs_enquete(Request $request){
       return   userHasPvs::with('user:id,nom','pvs:id,Numpvs','pvs.hasfichier:pvsID,lien')
                   ->select('id','userID','pvsID','traitID')
-                  ->where('traitID',5)// 5 : pvs enquete confirmer
+                  ->where('traitID','>=',5)// 5 : pvs enquete confirmer
                   ->where('pvsID',function ($query) {
                     global $request;
                     $query->select('id')
@@ -88,13 +88,15 @@ class dossierEnqueteController extends Controller
     public function paginateChambre1(Request $request){
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
                          ->where('chambre_enquete',"الغرفة 1")
-                         ->where('traiter',false)
+                         ->where('traiter',true)
+                         ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
       public function paginateChambre2(Request $request){
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
                          ->where('chambre_enquete',"الغرفة 2")
-                         ->where('traiter',false)
+                         ->where('traiter',true)
+                         ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
 
@@ -115,7 +117,8 @@ class dossierEnqueteController extends Controller
 
       public function paginateTraiter(Request $request){
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
-                         ->where('traiter',false)
+                         ->where('traiter',true)
+                         ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
 
@@ -130,8 +133,44 @@ class dossierEnqueteController extends Controller
 
       public function paginate_mes_fileJuge(Request $request){
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
-                         ->where('traiter',false)
+                        // ->where('traiter',false)
                          ->where('juge_enqueteID',$request->user['id'])
+                         ->orderBy('updated_at','desc')
+                         ->orderBy('traiter','desc')
+                         ->paginate(10);
+      }
+
+      public function addDescisionEnquete(Request $request,$ND){
+          $updatedDossier = dossierEnquete::where('NumDossier',$request->NumDossier)
+                                    ->find($ND);
+
+          DB::transaction(function() use ($updatedDossier,$request){
+            $succes = -1;
+            $lienDescision = DossierService::addDescisionpdf($request);
+            $updatedDossier->lienDescision = $lienDescision;
+            $updatedDossier->traiter = true;
+            $updatedDossier->update();
+            $succes = 1;
+            if($succes == -1 || $lienDescision == -1 ){
+                DB::rollBack();
+                return response()->json(["error"=>"ll"],501);
+            }
+        });
+      }
+
+      ######### les pvsEnquete d'un vice
+      public function dossiersParVice(Request $request){
+        return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
+                         ->where('userID',$request->user['id'])
+                         ->where('NumDossier',$request->NumDossier)
+                         ->get();
+      }
+
+      public function paginate_mes_fileVice(Request $request){
+        return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
+                        // ->where('traiter',false)
+                         ->where('userID',$request->user['id'])
+                         ->orderBy('traiter','desc')
                          ->orderBy('updated_at','desc')
                          ->paginate(10);
       }

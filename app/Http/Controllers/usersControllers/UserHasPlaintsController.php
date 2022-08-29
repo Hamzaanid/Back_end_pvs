@@ -151,4 +151,18 @@ class UserHasPlaintsController extends Controller
             ->where('traitID', 1)
             ->get();
     }
+
+    // les plaints a confirmer
+    public function plaint_a_confirmer(Request $request)
+    { // return usrhasplaintdo::mesplaintes($request);
+        return $plaints = DB::table('plaints')
+            ->join('user_has_plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
+            ->join('plaint_has_fichiers', 'plaints.id','=', 'plaint_has_fichiers.plaintID')
+            ->select( 'plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
+                       'user_has_plaints.dateMission','user_has_plaints.traitID','user_has_plaints.userID',
+                       'user_has_plaints.descision',
+                       'plaint_has_fichiers.lien')
+                       ->whereIn('user_has_plaints.traitID',[2])
+                       ->get();
+    }
 }

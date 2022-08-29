@@ -21,8 +21,8 @@ class PvsController extends Controller
 
     public function cherche_byNumpvs(Request $request){
 
-                    return $pv = userHasPvs:: with('pvs','pvs.hasfichier:pvsID,lien','pvs.typepvs')
-                            ->select('pvs.id as pvsID','user_has_pvs.traitID','user_has_pvs.descision')
+                    return $pv = userHasPvs:: with('pvs','pvs.hasfichier:pvsID,lien','pvs.typepvs','user:id,nom')
+                            ->select('pvs.id as pvsID','user_has_pvs.traitID','user_has_pvs.descision','userID')
                             ->rightJoin('pvs','pvs.id','=','user_has_pvs.pvsID')
                             ->where('Numpvs',$request->Numpvs)
                             ->get();
@@ -158,8 +158,7 @@ class PvsController extends Controller
                     global $request;
                  $query->select('pvsID')
                      ->from('user_has_pvs')
-                     ->where('user_has_pvs.traitID',2)
-                     ->Orwhere('user_has_pvs.traitID',3);
+                     ->where('user_has_pvs.traitID','>=',2);
                     })
         ->count();
 

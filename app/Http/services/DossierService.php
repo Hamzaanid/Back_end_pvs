@@ -43,5 +43,21 @@ class DossierService{
 
 
    }
+
+   public static function addDescisionpdf($request)
+   {
+       try{
+
+           $file = $request->file('file');
+           $name = $file->getClientOriginalName();
+
+        return Storage::putFileAs("public/DescisionEnquete", $file , $name);
+
+       }catch(Exception $e){
+           return -1;
+       }
+
+
+  }
 }
 ?>

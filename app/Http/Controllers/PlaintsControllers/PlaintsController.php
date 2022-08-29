@@ -26,8 +26,8 @@ class PlaintsController extends Controller
     // chercher sur un plaint par reference
     public function getplaintByref(Request $request)
     {
-        return $pl = userHasPlaints::with('plaint','plaint.hasfichier:plaintID,lien as lien')
-            ->select('plaints.id as plaintID', 'user_has_plaints.traitID','user_has_plaints.descision')
+        return $pl = userHasPlaints::with('plaint','plaint.hasfichier:plaintID,lien as lien','user:id,nom')
+            ->select('plaints.id as plaintID', 'user_has_plaints.traitID','user_has_plaints.descision','userID')
             ->rightJoin('plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
             ->where('referencePlaints', $request->reference)
             ->get();
@@ -129,7 +129,7 @@ class PlaintsController extends Controller
                     $lien = $plainthasfiche->lien;
                     $plainthasfiche->delete();
                     $plaint->delete();
-                    
+
                     Storage::delete($lien);
                 }
             });

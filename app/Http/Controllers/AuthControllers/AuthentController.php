@@ -93,7 +93,7 @@ class AuthentController extends Controller
     {
             $users = JWTAuth::parseToken()->authenticate();
 
-            return $this->respondWithToken($request->token,$users);
+            return $this->respondWithToken('vide',$users);
 
 
 
