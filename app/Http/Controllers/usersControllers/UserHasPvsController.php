@@ -104,7 +104,7 @@ class UserHasPvsController extends Controller
     public function update_descision_pvs(Request $request,$id_pvs){
         $descision = $request->userhaspvs['descision'];
         $lien = $request->userhaspvs['lien'];
-        $userID = $request->userhaspvs['userID'];
+        $userID = $request->user['id'];
 
         if($descision != '' && $userID != ''){
            // usrhaspvsdo::update($request,$id_pvs);
@@ -166,6 +166,19 @@ class UserHasPvsController extends Controller
                     ->where('user_has_pvs.userID',$request->userID)
                     ->where('user_has_pvs.traitID',4)
                     ->get();
+     }
+
+     public function pvs_a_confirmer(Request $request,$typePvs){ // 2 ou 4
+        // return usrhaspvsdo::mespvs($request);
+        return $pvs = DB::table('pvs')
+        ->join('user_has_pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
+        ->join('pvs_has_fichiers', 'pvs.id', '=', 'pvs_has_fichiers.pvsID')
+        ->select( 'pvs.id', 'pvs.Numpvs', 'pvs.dateEnregPvs',
+                   'user_has_pvs.dateMission','user_has_pvs.traitID','user_has_pvs.userID',
+                   'user_has_pvs.descision',
+                   'pvs_has_fichiers.lien')
+                   ->where('user_has_pvs.traitID',$typePvs) // 4 Enquete pas valider
+                   ->get();
      }
 
 }

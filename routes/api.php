@@ -125,8 +125,8 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/updateTrait/{id}',[UserHasPlaintsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPlaintsController::class,'destroy']);
         Route::get('/mesplaintes',[UserHasPlaintsController::class,'get_mes_plaintes']);
-        
-        Route::get('/plaint_a_confirmer',[UserHasPlaintsController::class,'plaint_a_confirmer']);
+
+        Route::get('/plaint_a_confirmer/{numTrait}',[UserHasPlaintsController::class,'plaint_a_confirmer']);
 
         Route::post('/getArchiveplaint',[UserHasPlaintsController::class,'getArchivePlaint']);
 
@@ -146,6 +146,7 @@ Route::namespace('UsersControllers')->prefix('/users')
         Route::put('/updateTrait/{id}',[UserHasPvsController::class,'updateTrait']);
         Route::delete('/delete/{id}',[UserHasPvsController::class,'destroy']);
         Route::get('/mespvs',[UserHasPvsController::class,'get_mes_pvs']);
+        Route::get('/pvs_a_confirmer/{typePvs}',[UserHasPvsController::class,'pvs_a_confirmer']);
         Route::post('/getArchivepvs',[UserHasPvsController::class,'getArchivePvs']);
 
         Route::post('/change_user/{id_pvs}',[UserHasPvsController::class,'change_user']);
@@ -163,7 +164,9 @@ Route::namespace('Dossiers_enquete')->prefix('/Enquete')
     ->middleware(['CheckUser'])->group( function() {
     Route::get('/index_juge',[dossierEnqueteController::class,'index_juge']);
     Route::get('/index_type',[dossierEnqueteController::class,'index_type']);
+
     Route::post('/pvs_enquete',[dossierEnqueteController::class,'get_pvs_enquete']);
+    Route::delete('/delete/{id}',[dossierEnqueteController::class,'destroy']);
     Route::get('/all_pvs_enquete',[dossierEnqueteController::class,'all_pvs_enquete']);
 
     Route::post('/storeDossier',[dossierEnqueteController::class,'storeDossier']);

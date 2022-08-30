@@ -10,6 +10,7 @@ use App\Models\userHasPvs;
 use App\Models\users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class dossierEnqueteController extends Controller
 {
@@ -26,17 +27,10 @@ class dossierEnqueteController extends Controller
        return typeDossier::select("id","nom")->get();
     }
 
-    public function index_pvs_enquete(){ // pas utuliser et pas d'api
-        return   userHasPvs::with('user:id,nom','pvs:id,Numpvs')
-                  ->select('id','userID','pvsID')
-                  ->where('traitID',4)
-                  ->get();
-     }
-
     public function get_pvs_enquete(Request $request){
       return   userHasPvs::with('user:id,nom','pvs:id,Numpvs','pvs.hasfichier:pvsID,lien')
                   ->select('id','userID','pvsID','traitID')
-                  ->where('traitID','>=',5)// 5 : pvs enquete confirmer
+                  ->where('traitID','>=',5)// 5 : pvs enquete confirmer par le proc.
                   ->where('pvsID',function ($query) {
                     global $request;
                     $query->select('id')
@@ -48,9 +42,10 @@ class dossierEnqueteController extends Controller
     public function all_pvs_enquete(Request $request){
         return   userHasPvs::with('user:id,nom','pvs:id,Numpvs','pvs.hasfichier:pvsID,lien')
                     ->select('id','userID','pvsID')
-                    ->where('traitID',5)// 5 : pvs enquete confirmer
+                    ->where('traitID',5)    // 5 : pvs enquete confirmer
                     ->paginate(10);
       }
+
         ############# les dossiers d'enquete ############
 
     public function storeDossier(Request $request){
@@ -117,7 +112,7 @@ class dossierEnqueteController extends Controller
 
       public function paginateTraiter(Request $request){
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
-                         ->where('traiter',true)
+                         ->where('traiter',false)
                          ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
@@ -174,4 +169,21 @@ class dossierEnqueteController extends Controller
                          ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
+
+      public function destroy($id){
+        //return pvsdo::delete($id);
+        $dossier =dossierEnquete::find($id);
+        $lienDossierpdf = $dossier->lien;
+        if($dossier->traiter){
+            return response()->json(["traiter"=>true],501);
+        }else{
+             DB::transaction(function () use ($dossier,$lienDossierpdf){
+                $dossier->delete();
+                    Storage::delete($lienDossierpdf);
+                   // if(Storage::exists('/mnt/files/file.jpg')) ;
+             });
+        }
+
+
+    }
 }
