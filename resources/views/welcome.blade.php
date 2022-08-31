@@ -6,7 +6,8 @@
 
         <title>Pvs</title>
     </head>
-    <body>
+    <body> 
+        <div> Gestion des pvs </div>
         <div id="app">
             <app></app>
         </div>

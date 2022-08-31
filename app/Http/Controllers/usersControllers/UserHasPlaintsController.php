@@ -158,9 +158,10 @@ class UserHasPlaintsController extends Controller
         return $plaints = DB::table('plaints')
             ->join('user_has_plaints', 'plaints.id', '=', 'user_has_plaints.plaintID')
             ->join('plaint_has_fichiers', 'plaints.id','=', 'plaint_has_fichiers.plaintID')
+            ->join('users','users.id','=','user_has_plaints.userID')
             ->select( 'plaints.id', 'plaints.referencePlaints', 'plaints.dateEnregPlaints',
                        'user_has_plaints.dateMission','user_has_plaints.traitID','user_has_plaints.userID',
-                       'user_has_plaints.descision',
+                       'user_has_plaints.descision','users.nom as nameUser',
                        'plaint_has_fichiers.lien')
                        ->where('user_has_plaints.traitID',$numTrait)
                        ->get();

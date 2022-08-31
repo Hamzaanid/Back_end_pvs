@@ -173,9 +173,10 @@ class UserHasPvsController extends Controller
         return $pvs = DB::table('pvs')
         ->join('user_has_pvs', 'pvs.id', '=', 'user_has_pvs.pvsID')
         ->join('pvs_has_fichiers', 'pvs.id', '=', 'pvs_has_fichiers.pvsID')
+        ->join('users','users.id','=','user_has_pvs.userID')
         ->select( 'pvs.id', 'pvs.Numpvs', 'pvs.dateEnregPvs',
                    'user_has_pvs.dateMission','user_has_pvs.traitID','user_has_pvs.userID',
-                   'user_has_pvs.descision',
+                   'user_has_pvs.descision','users.nom as nameUser',
                    'pvs_has_fichiers.lien')
                    ->where('user_has_pvs.traitID',$typePvs) // 4 Enquete pas valider
                    ->get();
