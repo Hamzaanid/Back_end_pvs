@@ -41,9 +41,9 @@ class users extends Seeder
             DB::table('users')->insert([
                 'numUser'=> "0655667788",
                  'active' => true,
-                'nom'      =>  "admin",
+                'nom'      =>  ("admin"),
                 'email'    => "admin@gmail.com",
-                'password' => "admin",
+                'password' => md5("admin"),
                 'idRole'   => 1
                 ]);
 
@@ -52,7 +52,7 @@ class users extends Seeder
                     'active' => true,
             'nom'      =>  "proc",
             'email'    => "proc@gmail.com",
-            'password' => "proc",
+            'password' => md5("proc"),
             'idRole'   => 2
             ]);
 
@@ -61,7 +61,7 @@ class users extends Seeder
                     'active' => true,
                 'nom'      =>  "vice_proc",
                 'email'    => "vice_proc@gmail.com",
-                'password' => "vice_proc",
+                'password' => md5("vice_proc"),
                 'idRole'   => 3
                 ]);
                 DB::table('users')->insert([
@@ -69,7 +69,7 @@ class users extends Seeder
                     'active' => true,
                     'nom'      =>  "user",
                     'email'    => "user@gmail.com",
-                    'password' => "user",
+                    'password' => md5("user"),
                     'idRole'   => 4
                     ]);
 
@@ -78,7 +78,7 @@ class users extends Seeder
                         'active' => true,
                         'nom'      =>  "j_enquete",
                         'email'    => "j_enquete@gmail.com",
-                        'password' => "j_enquete",
+                        'password' => md5("j_enquete"),
                         'idRole'   => 5
                         ]);
                DB::table('users')->insert([
@@ -86,7 +86,7 @@ class users extends Seeder
                             'active' => true,
                             'nom'      =>  "f_enquete",
                             'email'    => "f_enquete@gmail.com",
-                            'password' => "f_enquete",
+                            'password' => md5("f_enquete"),
                             'idRole'   => 6
                             ]);
 

@@ -41,7 +41,7 @@ class UserController extends Controller
             $newUser->numUser =  $request->users['numUser'];
             $newUser->active =  $request->users['active'];
             $newUser->email = $request->users['email'];
-            $newUser->password = $request->users['password'];
+            $newUser->password = md5($request->users['password']);
             $newUser->idRole = $request->users['idRole'];
 
             DB::transaction(function () use ($newUser){
@@ -67,7 +67,7 @@ class UserController extends Controller
 
       $userUpdate = users::find($id);
       if($request->users['password']){
-          $userUpdate->password = $request->users['password'];
+          $userUpdate->password =md5( $request->users['password']);
       }
           $userUpdate->nom = $request->users['nom'];
           $userUpdate->numUser =  $request->users['numUser'];
@@ -99,6 +99,16 @@ class UserController extends Controller
 }else{
     return response()->json(["error"=>"operation impossible"],501);
 }
+    }
+
+    public function UpdatePassword(Request $request){
+      $userupdate = users::find($request->user['id']);
+        if(md5($request->userput['lastPassword']) == $userupdate->password){
+            $userupdate->password =md5($request->userput['newPassword']);
+            $userupdate->update();
+        }else{
+            return response()->json([],500);
+        }
     }
 
 }

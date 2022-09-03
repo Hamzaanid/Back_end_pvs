@@ -32,18 +32,19 @@ class AuthentController extends Controller
 
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
-            'nom' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
         // get parametrs 'email' and 'password'
-        $usr=$request->only('nom', 'password');
+        $usr = $request->only('email', 'password');
 
         //then get id of users
         try{
+            $passHashed = md5($usr['password']);
         $id = users::select('id')
-                  ->where('nom','=',$usr['nom'])
-                  ->where('password','=',$usr['password'])
+                  ->where('email',$usr['email'])
+                  ->where('password',$passHashed)
                   ->where('active','=',true)
                   ->get();
         }catch(Exception $e){

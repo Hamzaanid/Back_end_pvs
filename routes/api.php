@@ -110,6 +110,7 @@ Route::namespace('UsersControllers')->prefix('/users')
     Route::delete('/delete/{id}', [UserController::class, 'destroy']);
     Route::get('/viceProc',[UserController::class,'index_viceProc']);
     Route::post('/img_sign',[UserController::class,'img_sign']);
+    Route::put('/UpdatePassword',[UserController::class,'UpdatePassword']);
 
     Route::post('/logout',[AuthentController::class,'logout']);
     Route::get('/profile',[AuthentController::class,'profile']);
