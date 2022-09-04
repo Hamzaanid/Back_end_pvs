@@ -20,7 +20,7 @@ class CreateUserHasPlaintsTable extends Migration
             $table->foreignId('traitID')->constrained('traiteds')
                   ->onUpdate('cascade');
                   $table->date('dateMission');
-                  $table->string('descision')->nullable();
+                  $table->text('descision')->nullable();
             $table->timestamps();
         });
     }

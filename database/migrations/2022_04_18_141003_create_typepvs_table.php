@@ -15,7 +15,7 @@ class CreateTypepvsTable extends Migration
     {
         Schema::create('typepvs', function (Blueprint $table) {
             $table->id();
-            $table->string('nom',100);
+            $table->string('nom')->unique();
             $table->timestamps();
         });
     }

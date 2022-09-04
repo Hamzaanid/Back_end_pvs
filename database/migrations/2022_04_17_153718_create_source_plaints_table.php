@@ -15,7 +15,7 @@ class CreateSourcePlaintsTable extends Migration
     {
         Schema::create('source_plaints', function (Blueprint $table) {
             $table->id();//'idSourcePlaints');
-            $table->string('nom',45)->unique();
+            $table->string('nom')->unique();
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class CreateTraitedsTable extends Migration
     {
         Schema::create('traiteds', function (Blueprint $table) {
             $table->id();
-            $table->string('nom',45)->unique();
+            $table->string('nom')->unique();
             $table->timestamps();
         });
     }

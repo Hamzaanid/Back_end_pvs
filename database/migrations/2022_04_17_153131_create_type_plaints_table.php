@@ -15,7 +15,7 @@ class CreateTypePlaintsTable extends Migration
     {
         Schema::create('type_plaints', function (Blueprint $table) {
             $table->id();//'idTypePlaints'
-            $table->string('nom',45)->unique();
+            $table->string('nom')->unique();
             $table->timestamps();
         });
     }

@@ -27,10 +27,10 @@ class CreatePvsTable extends Migration
 
             $table->string('Numpvs')->unique();
             $table->date('dateEnregPvs');
-            $table->string('sujetpvs',150);
+            $table->string('sujetpvs');
 
 
-            $table->string('policeJudics',100)->nullable();
+            $table->string('policeJudics')->nullable();
             $table->date('datePvs')->nullable();
             $table->time('heureRealisation')->nullable();
             $table->boolean('contreInnconue')->nullable();

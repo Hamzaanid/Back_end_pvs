@@ -10,7 +10,7 @@ class CreateTypeDossiersTable extends Migration
     {
         Schema::create('type_dossiers', function (Blueprint $table) {
             $table->id();
-            $table->string('nom',50);
+            $table->string('nom');
             $table->timestamps();
         });
     }
