@@ -25,7 +25,7 @@ class CreateUserHasPvsTable extends Migration
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
 
-                  $table->text('descision')->nullable();
+                  $table->text('descision',1000)->nullable();
                   $table->date('dateMission');
 
             $table->timestamps();

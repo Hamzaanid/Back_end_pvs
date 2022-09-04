@@ -4,6 +4,7 @@ namespace App\Http\Controllers\PvsControllers;
 use App\Http\services\pvsdo;
 use App\Http\services\fichierdo;
 use App\Http\Controllers\Controller;
+use App\Models\dossierEnquete;
 use Illuminate\Http\Request;
 use App\Models\pvs;
 use App\Models\pvs_has_fichier;
@@ -107,6 +108,7 @@ class PvsController extends Controller
 
     public function destroy($id){
         //return pvsdo::delete($id);
+
         $pv = pvs::find($id);
         $pvhasfiche =  pvs_has_fichier::where('pvsID',$id)->first();
         $userhaspv = userHasPvs::where('pvsID',$id)->first();
