@@ -130,8 +130,15 @@ class dossierEnqueteController extends Controller
         return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
                         // ->where('traiter',false)
                          ->where('juge_enqueteID',$request->user['id'])
+                         ->where('traiter',false)
                          ->orderBy('updated_at','desc')
-                         ->orderBy('traiter','desc')
+                         ->paginate(10);
+      }
+      public function paginate_mes_fileJugeTraiter(Request $request){
+        return dossierEnquete::with('user:id,nom','pvs:id,Numpvs','juge_enquete:id,nom')
+                         ->where('juge_enqueteID',$request->user['id'])
+                         ->where('traiter',true)
+                         ->orderBy('updated_at','desc')
                          ->paginate(10);
       }
 

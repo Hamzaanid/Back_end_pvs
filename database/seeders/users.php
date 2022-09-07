@@ -38,6 +38,8 @@ class users extends Seeder
                 'nom' => 'f_enquête'
             ]);
 
+
+
             DB::table('users')->insert([
                 'numUser'=> "0655667788",
                  'active' => true,
@@ -47,7 +49,7 @@ class users extends Seeder
                 'idRole'   => 1
                 ]);
 
-       DB::table('users')->insert([
+    /*   DB::table('users')->insert([
             'numUser'=> "0655667788",
                     'active' => true,
             'nom'      =>  "proc",
@@ -90,6 +92,6 @@ class users extends Seeder
                             'idRole'   => 6
                             ]);
 
-
+                            */
     }
 }

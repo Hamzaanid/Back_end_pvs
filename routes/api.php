@@ -181,7 +181,9 @@ Route::namespace('Dossiers_enquete')->prefix('/Enquete')
     Route::get('/paginateTraiter',[dossierEnqueteController::class,'paginateTraiter']);
     ############# dossiersEnquetes d'un juge (chambre)#########
     Route::post('/dossiersJuge',[dossierEnqueteController::class,'dossiersJuge']);
+
     Route::get('/paginate_mes_fileJuge',[dossierEnqueteController::class,'paginate_mes_fileJuge']);
+    Route::get('/paginate_mes_fileJugeTraiter',[dossierEnqueteController::class,'paginate_mes_fileJugeTraiter']);
 
     Route::post('/addDescisionEnquete/{ND}',[dossierEnqueteController::class,'addDescisionEnquete']);
 
