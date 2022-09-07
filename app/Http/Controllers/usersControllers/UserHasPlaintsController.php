@@ -105,7 +105,7 @@ class UserHasPlaintsController extends Controller
             'traitID' => $request->userhasplaint['traitID'],
             'descision'=>$request->userhasplaint['descision']
         ]);
-            return fichierdo::update_descision_pdf($userID, $descision, $lien);
+            return fichierdo::update_descision_pdf($request,$userID, $descision, $lien);
         } else {
             return response()->json(["error" => "vide"], 501);
         }

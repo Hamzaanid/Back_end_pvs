@@ -92,8 +92,7 @@ class UserHasPvsController extends Controller
             $userhaspvs = userHasPvs::where('pvsID',$id_pvs)->first();
             $userhaspvs->update([
             'traitID' => $request->userhaspvs['traitID'],
-            'descision'=> $request->userhaspvs['
-            ']
+            'descision'=> $request->userhaspvs['descision']
             ]);
                 return fichierdo::signerPDF($request,$descision,$lien);
         }else{
@@ -114,7 +113,7 @@ class UserHasPvsController extends Controller
                'traitID' => $request->userhaspvs['traitID'],
                'descision'=> $request->userhaspvs['descision']
            ]);
-            return fichierdo::update_descision_pdf($userID,$descision,$lien);
+            return fichierdo::update_descision_pdf($request,$userID,$descision,$lien);
         }else{
             return response()->json(["error"=>"vide"],501);
         }

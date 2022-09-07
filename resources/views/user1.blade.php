@@ -19,16 +19,25 @@
       background-color:white; /*not necessary, just to show the image box, can be added to img*/
     }
     .decisionh2{
+        font-weight: bold;
+        font-size: 26px;
         text-decoration: underline;
         font-family:"Droid Arabic Naskh", Arial, Helvetica, sans-serif;
     }
+
+
     </style>
 </head>
 
 <body>
     <div dir="rtl">
-      <h2 class="decisionh2">القرار :</h2>
-       <p> {{ $descision }} </p>
+         <p class="decisionh2"> القرار/الإجراء : </p>
+         <p dir="ltr"> <span dir="rtl">{{$text}} </span>  : {{ $NumpvsOuplaint }} </p>
+
+       <p> بتاريخ : {{ $date }}
+         <br />
+         <br />
+         {{ $descision }} </p>
           <div class="image">
             <img src="{{ storage_path('app/public/img_signature/user'. $id .'.jpeg') }}">
           </div>

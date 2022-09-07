@@ -70,13 +70,26 @@ class fichierdo{
 
 
   public static function signerPDF($request,$descision,$lien){
-    //
+       $temp = explode("/",$lien);
+       $num = explode(".",array_pop($temp)); // num 00-00-00.pdf
+
+
+       $text="";
+       if($request->userhaspvs){
+          $text = "محضر عدد ";
+       }
+       if($request->userhasplaint){
+           $text="شكاية رقم";
+       }
+
     $succes_generate_pdf1 = 0;
     try{
         $data = [
                 'descision' => $descision,
                 'id'=> $request->user->id,
-                'date' => date('m/d/Y')
+                'date' => date('m/d/Y'),
+                'NumpvsOuplaint'=> $num[0],
+                'text' => $text
             ];
 
             $pdf = PDF::loadView('user1', $data);
@@ -112,8 +125,20 @@ class fichierdo{
   }
 
 
-  public static function update_descision_pdf($userID,$descision,$lien){
+
+  public static function update_descision_pdf($request,$userID,$descision,$lien){
        //couper la dernier page
+       $temp = explode("/",$lien);
+       $num = explode(".",array_pop($temp)); // num 00-00-00.pdf
+
+
+       $text="";
+       if($request->userhaspvs){
+          $text = "محضر عدد ";
+       }
+       if($request->userhasplaint){
+           $text="شكاية رقم";
+       }
     $pdf = new Fpdi();
     $pageCount =  $pdf->setSourceFile(storage_path('app/'.$lien));//nombre de page
 
@@ -131,7 +156,9 @@ class fichierdo{
                 $data = [
                         'descision' => $descision,
                         'id'=> $userID,
-                        'date' => date('m/d/Y')
+                        'date' => date('m/d/Y'),
+                        'NumpvsOuplaint'=> $num[0],
+                        'text' => $text
                     ];
 
                     $pdf = PDF::loadView('user1', $data);
