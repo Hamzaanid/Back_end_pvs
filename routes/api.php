@@ -20,8 +20,7 @@ use App\Http\Controllers\UsersControllers\UserHasPvsController;
 use App\Http\Controllers\AuthControllers\AuthentController;
 use App\Http\Controllers\Dossiers_enquete\dossierEnqueteController;
 use App\Http\Controllers\PDFController;
-
-
+use App\Http\Controllers\PvsControllers\pvsReponseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +80,9 @@ Route::namespace('PvsControllers')->prefix('/pvs')
      Route::post('/ByNumpvs',[PvsController::class, 'cherche_byNumpvs']);
     Route::post('/Bydate',[PvsController::class,'getpvsBydateEnrg']);
     Route::post('/pvs_of_user',[PvsController::class, 'getPvs_of_user']);
+    // pvs reponse ****************************** new
+    Route::post('/add_pvs_reponse',[pvsReponseController::class,'add_pvs_reponse']);
+    Route::post('/pvsReponsePlaints',[pvsReponseController::class,'pvsReponsePlaints']);
 
     Route::post('addPdf/{idpvs}', [PvsController::class,'PDF_pvs']);// inclut dans pvs
     Route::post('/statistique',[PvsController::class,'statistique']);

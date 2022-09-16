@@ -59,7 +59,8 @@ class UserHasPvsController extends Controller
                     ->where('traitID','>=',5)
                     ->Orwhere('traitID',3)
                     ->whereBetween('pvs.dateEnregPvs',[$cher['de'],$cher['a']])
-                    ->paginate(20);
+                    ->orderBy("user_has_pvs.updated_at","desc")
+                    ->paginate(10);
     }
 
     public function destroy($id)

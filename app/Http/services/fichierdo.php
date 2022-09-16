@@ -25,11 +25,6 @@ class fichierdo{
 
     public static function store_pdf_pvs($request,$idpvs,$Numpvs)
     {
-        /*$rules = ['file' => 'required', 'file.*' => 'mimes:pdf'];
-        $validator = $request->validate($rules);
-        if($validator->fails()){
-            return response()->json(["type"=>"format"],503);
-        }*/
         try{
             $file =$request->file('file');
          $name = $Numpvs;
