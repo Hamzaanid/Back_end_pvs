@@ -82,7 +82,7 @@ class fichierdo{
         $data = [
                 'descision' => $descision,
                 'id'=> $request->user->id,
-                'date' => date('m/d/Y'),
+                'date' => date('d/m/Y'),
                 'NumpvsOuplaint'=> $num[0],
                 'text' => $text
             ];
@@ -151,7 +151,7 @@ class fichierdo{
                 $data = [
                         'descision' => $descision,
                         'id'=> $userID,
-                        'date' => date('m/d/Y'),
+                        'date' => date('d/m/Y'),
                         'NumpvsOuplaint'=> $num[0],
                         'text' => $text
                     ];
